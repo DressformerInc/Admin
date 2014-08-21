@@ -7,7 +7,7 @@ Ext.define('Admin.view.main.MainModel', {
     alias: 'viewmodel.main',
 
     data: {
-        name: 'Admin2'
+        name: 'Admin'
     }
 
     //TODO - add data, formulas and/or methods to support your view
