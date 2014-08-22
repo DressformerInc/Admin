@@ -368,7 +368,7 @@
 
                 @if $ext-trial {
                     &:after {
-                        content: 'Ext JS Trial';
+                        content: '';
                         position: absolute;
                         top: 0;
                         right: 0;
