@@ -12,6 +12,8 @@ Ext.define('Admin.view.garment.Search', {
     title: 'Garments',
 
     requires: [
+        'Admin.model.Garment',
+        'Admin.store.Garment',
         'Admin.view.garment.SearchController',
         'Admin.view.garment.SearchModel'
 //        'Garment.override.grid.column.Date'
@@ -29,16 +31,23 @@ Ext.define('Admin.view.garment.Search', {
         store: '{garments}'
     },
 
+//    store: Ext.data.StoreManager.lookup('garmentStore'),
+
     tbar: [
-        {text: 'Upload', handler: 'onClickUpload' }
+        {text: 'Add', handler: 'onClickAdd' }
     ],
+
+    columnLines: true,
 
     columns: [{
         text: 'ID',
         dataIndex: 'id'
     }, {
         text: 'Title',
-        dataIndex: 'title',
+        dataIndex: 'name',
         flex: 1
-    }]
+    }],
+    listeners: {
+        rowdblclick: 'onRowEdit'
+    }
 });

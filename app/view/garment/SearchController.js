@@ -2,8 +2,24 @@ Ext.define('Admin.view.garment.SearchController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.garmentsearch',
 
-    onClickUpload: function () {
-        console.log('upload clicked', null);
+    requires: [
+        'Admin.view.garment.Edit'
+    ],
+
+    onClickAdd: function () {
+        console.log('add clicked', null);
+    },
+    onRowEdit: function () {
+        console.log('row edit', arguments);
+        var win = new Admin.view.garment.Edit({
+            viewModel: {
+                data: {
+                    theUser: {}
+                }
+            }
+        });
+
+        win.show();
     }
 
 
