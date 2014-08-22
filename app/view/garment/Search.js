@@ -26,7 +26,7 @@ Ext.define('Admin.view.garment.Search', {
 
     bind: {
 //        title: 'Search - {theProject.name}',
-//        store: '{garments}'
+        store: '{garments}'
     },
 
     tbar: [

@@ -12,7 +12,9 @@ Ext.define('Admin.view.main.Main', {
 
     requires: [
         'Admin.model.*',
-        'Admin.view.garment.Search'
+        'Admin.view.garment.Search',
+        'Admin.view.main.MainController',
+        'Admin.view.main.MainModel'
     ],
     
     controller: 'main',

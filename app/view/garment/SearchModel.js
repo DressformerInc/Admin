@@ -4,6 +4,10 @@
 Ext.define('Admin.view.garment.SearchModel', {
     extend: 'Ext.app.ViewModel',
     alias: 'viewmodel.garmentsearch',
+
+    requires: [
+        'Admin.model.*'
+    ],
     
     data: {
         defaultStatus: 2
@@ -22,8 +26,8 @@ Ext.define('Admin.view.garment.SearchModel', {
     
     stores: {
         garments: {
-            /*model: 'Garment',
-            autoLoad: true,
+            model: 'Admin.model.Garment',
+            autoLoad: true/*,
             remoteFilter: true,
             filters: [{
                 property: 'status',
