@@ -6,15 +6,25 @@ Ext.define('Admin.view.garment.SearchController', {
         'Admin.view.garment.Edit'
     ],
 
-    onClickAdd: function () {
-        console.log('add clicked', null);
+    onAddGarment: function () {
+        var win = new Admin.view.garment.Edit({
+            viewModel: {
+                data: {
+                    title: 'Add garment',
+                    theGarment: {}
+                }
+            }
+        });
+
+        win.show();
     },
-    onRowEdit: function () {
+    onEditGarment: function () {
         console.log('row edit', arguments);
         var win = new Admin.view.garment.Edit({
             viewModel: {
                 data: {
-                    theUser: {}
+                    title: 'Edit garment',
+                    theGarment: {}
                 }
             }
         });

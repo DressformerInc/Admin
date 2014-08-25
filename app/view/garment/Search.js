@@ -34,7 +34,7 @@ Ext.define('Admin.view.garment.Search', {
 //    store: Ext.data.StoreManager.lookup('garmentStore'),
 
     tbar: [
-        {text: 'Add', handler: 'onClickAdd' }
+        {text: 'Add', handler: 'onAddGarment' }
     ],
 
     columnLines: true,
@@ -48,6 +48,6 @@ Ext.define('Admin.view.garment.Search', {
         flex: 1
     }],
     listeners: {
-        rowdblclick: 'onRowEdit'
+        rowdblclick: 'onEditGarment'
     }
 });

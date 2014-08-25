@@ -15,14 +15,7 @@ Ext.define('Admin.view.garment.SearchModel', {
     },
     
     formulas: {
-        defaultUser: function (get) {
-            var project = get('theProject');
-            if (get('currentUser.projectId') === get('theProject.id')) {
-                return get('currentUser.id');
-            } else {
-                return get('theProject.leadId');
-            }
-        }
+
     },
     
     stores: {

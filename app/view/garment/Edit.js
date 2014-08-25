@@ -7,68 +7,51 @@
 Ext.define('Admin.view.garment.Edit', {
     extend: 'Ext.window.Window',
 
-//    controller: 'edit', // links to Ticket.view.user.UserController
+    controller: 'garmentedit', // links to 'Admin.view.garment.EditController'
+    viewModel: {
+        type: 'garmentedit'
+    },
 
-    width: 300,
-    minHeight: 250,
-    height: 450,
-    bodyPadding: 10,
+    width: 800,
+    minHeight: 400,
+    height: 600,
     layout: {
         type: 'vbox',
         align: 'stretch'
     },
 
     // As a Window the default property we are binding is "title":
-    bind: 'Edit garmnet: {theGarment.name}',
+    bind: {
+        title: '{title}'
+//        theGarment: '{theGarment}'
+    },
 
     modal: true,
 
-    tools: [{
-        type: 'gear',
-        tooltip: 'Edit Groups',
-
-        // Call is routed to our ViewController (Ticket.view.user.UserController):
-        callback: 'onGroupsClick'
+    tbar: [{
+        xtype: 'button',
+        text: 'Browse...',
+        handler: 'onSelectFiles'
     }],
 
     items: [{
-        xtype: 'textfield',
-        fieldLabel: 'Name',
-        labelWidth: 70,
-
-        // As a textfield the default property we are binding is "value":
-//        bind: '{theUser.name}'
-    }, {
-        // The multiselector is basically a grid that displays the currently selected
-        // items. To add items there is a Search tool configured below.
-        xtype: 'multiselector',
-//        bind: '{theUser.groups}',
-
-        title: 'Groups',
-
-        flex: 1,
-        margin: '10 0',
-
-        // This configures the Search popup. In this case we want to browse all groups.
-//        search: {
-//            store: {
-//                model: 'Group'
-//            }
-//        }
+        xtype: 'treepanel',
+        bind: {
+            store: '{garmentData}'
+        },
+        useArrows: true,
+        rootVisible: false
     }],
 
     buttons: [{
-        text: 'Groups',
-        listeners: {
-            // Call is routed to our ViewController (Ticket.view.user.UserController):
-            click: 'onGroupsClick'
-        }
-    }, '->', {
         text: 'Close',
         listeners: {
-            // Call is routed to our ViewController (Ticket.view.user.UserController) but
-            // the "closeView" method is a helper inherited from Ext.app.ViewController.
-            click: 'closeView'
+            click: 'onClose'
+        }
+    }, '->', {
+        text: 'Upload',
+        listeners: {
+            click: 'onUpload'
         }
     }]
 });

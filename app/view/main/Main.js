@@ -17,7 +17,7 @@ Ext.define('Admin.view.main.Main', {
         'Admin.view.main.MainController',
         'Admin.view.main.MainModel'
     ],
-    
+
     controller: 'main',
     viewModel: {
         type: 'main'
@@ -27,24 +27,38 @@ Ext.define('Admin.view.main.Main', {
         type: 'border'
     },
 
-    items: [{
-        xtype: 'panel',
-        bind: {
-            title: '{name}'
+    items: [
+        {
+            xtype: 'treepanel',
+            bind: {
+                title: '{name}',
+                store: '{menu}'
+            },
+            region: 'west',
+            width: 250,
+            split: true,
+            collapsible: true,
+            useArrows: true,
+            rootVisible: false,
+            multiSelect: false,
+            columns: [
+                {
+                    xtype: 'treecolumn', //this is so we know which column will show the tree
+                    text: 'Menu',
+                    flex: 1,
+                    dataIndex: 'name'
+                }
+            ]
+
         },
-        region: 'west',
-        html: '<ul><li>This area is commonly used for navigation, for example, using a "tree" component.</li></ul>',
-        width: 250,
-        split: true,
-        tbar: [{
-            text: 'Button',
-            handler: 'onClickButton'
-        }]
-    },{
-        region: 'center',
-        xtype: 'tabpanel',
-        items:[{
-            xtype: 'garmentsearch'
-        }]
-    }]
+        {
+            region: 'center',
+            xtype: 'tabpanel',
+            items: [
+                {
+                    xtype: 'garmentsearch'
+                }
+            ]
+        }
+    ]
 });
