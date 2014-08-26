@@ -12,6 +12,10 @@ Ext.define('Admin.view.garment.Edit', {
         type: 'garmentedit'
     },
 
+    init: function () {
+        console.log('garment.Edit init:', arguments);
+    },
+
     width: 800,
     minHeight: 400,
     height: 600,
@@ -23,7 +27,6 @@ Ext.define('Admin.view.garment.Edit', {
     // As a Window the default property we are binding is "title":
     bind: {
         title: '{title}'
-//        theGarment: '{theGarment}'
     },
 
     modal: true,
@@ -37,11 +40,52 @@ Ext.define('Admin.view.garment.Edit', {
 
     items: [{
         xtype: 'treepanel',
-        bind: {
-            store: '{garmentData}'
-        },
+        reference: 'treepanel',
+//        bind: {
+//            store: '{garmentData}'
+//        },
         useArrows: true,
-        rootVisible: false
+        rootVisible: false,
+        fields: ['name', 'description'],
+        columns: [{
+            xtype: 'treecolumn',
+            text: 'Name',
+            dataIndex: 'name',
+            flex: 1,
+            sortable: true
+        }, {
+            text: 'Size',
+            dataIndex: 'size',
+            width: 100,
+            sortable: true,
+            renderer: function (value) {
+                if (value > 1) {
+                    var s = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+                    var e = Math.floor(Math.log(value) / Math.log(1024));
+                    if (e > 0) {
+                        return (value / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e];
+                    } else {
+                        return value + " " + s[e];
+                    }
+                } else if (value == 1) {
+                    return "1 Byte";
+                }
+                return '-';
+            }
+        }, {
+            text: 'Type',
+            dataIndex: 'type',
+            width: 200,
+            sortable: true
+        }],
+        root: {
+            expanded: true,
+            children: [
+                { name: "textures",  leaf: false },
+                { name: "targets",  leaf: false },
+                { name: "unknown", leaf: false }
+            ]
+        }
     }],
 
     buttons: [{

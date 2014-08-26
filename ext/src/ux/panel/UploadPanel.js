@@ -149,14 +149,28 @@ Ext.define('Ext.ux.panel.UploadPanel',
     }, initPlUpload: function () {
         this.uploader = new plupload.Uploader(
             {
-                url: this.url, runtimes: this.pluploadRuntimes, browse_button: this.getTopToolbar().getComponent('addButton').getEl().dom.id, container: this.getEl().dom.id, max_file_size: this.max_file_size || '', resize: this.resize || '', flash_swf_url: this.pluploadPath + '/plupload.flash.swf', silverlight_xap_url: this.pluploadPath + 'plupload.silverlight.xap', filters: this.filters || [], chunk_size: this.chunk_size, unique_names: this.unique_names, multipart: this.multipart, multipart_params: this.multipart_params || null, drop_element: this.getEl().dom.id, required_features: this.required_features || null
+                url: this.url,
+                runtimes: this.pluploadRuntimes,
+                browse_button: this.getTopToolbar().getComponent('addButton').getEl().dom.id,
+                container: this.getEl().dom.id,
+                max_file_size: this.max_file_size || '',
+                resize: this.resize || '',
+                flash_swf_url: this.pluploadPath + '/plupload.flash.swf',
+                silverlight_xap_url: this.pluploadPath + 'plupload.silverlight.xap',
+                filters: this.filters || [],
+                chunk_size: this.chunk_size,
+                unique_names: this.unique_names,
+                multipart: this.multipart,
+                multipart_params: this.multipart_params || null,
+                drop_element: this.getEl().dom.id,
+                required_features: this.required_features || null
             });
 
         // Events
         Ext.each(['Init', 'ChunkUploaded', 'FilesAdded', 'FilesRemoved', 'FileUploaded', 'PostInit'
                 , 'QueueChanged', 'Refresh', 'StateChanged', 'UploadFile', 'UploadProgress', 'Error' ]
             , function (v) {
-                this.uploader.bind(v, eval("this.Plupload" + v), this);
+                this.uploader.bind(v, this["Plupload" + v], this);
             }, this);
 
         // Init Plupload

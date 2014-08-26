@@ -40,7 +40,7 @@ Ext.define('Admin.view.garment.Search', {
 //    store: Ext.data.StoreManager.lookup('garmentStore'),
 
     tbar: [
-        {text: 'Add', handler: 'onAddGarment' },
+        {text: 'Add', handler: 'onAddGarment', reference: 'buttonAddGarment' },
         {
             xtype: 'uploadbutton',
             text: 'Select files',
@@ -105,6 +105,7 @@ Ext.define('Admin.view.garment.Search', {
         }
     ],
     listeners: {
-        rowdblclick: 'onEditGarment'
+        rowdblclick: 'onEditGarment',
+        afterrender: 'onViewRendered'
     }
 });
