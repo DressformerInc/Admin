@@ -7,13 +7,23 @@ Ext.define('Admin.view.garment.SearchController', {
     ],
 
     onAddGarment: function () {
-        var win = new Admin.view.garment.Edit({
-            viewModel: {
-                data: {
-                    title: 'Add garment',
-                    theGarment: {}
+//        var win = new Admin.view.garment.Edit({
+//            viewModel: {
+//                data: {
+//                    title: 'Add garment',
+//                    theGarment: {}
+//                }
+//            }
+//        });
+        var win = Ext.create('widget.window', {
+            title: 'upload',
+            width: 800,
+            height: 600,
+            items: [
+                {
+                    xtype: 'xuploadpanel'
                 }
-            }
+            ]
         });
 
         win.show();
