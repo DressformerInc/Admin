@@ -16,10 +16,23 @@ Ext.define('Admin.view.garment.EditController', {
             root = tree.getRootNode(),
             textures = root.findChild('name', 'textures'),
             targets = root.findChild('name', 'targets'),
-            unknown = root.findChild('name', 'unknown');
+            unknown = root.findChild('name', 'unknown'),
+            baseModel;
 
         function isTexture(file) {
             return /image/.test(file.type);
+        }
+
+        function isNormalMap(file) {
+            return isTexture(file) && /[_-]n/.test(file.name);
+        }
+
+        function isDiffuseMap(file) {
+            return isTexture(file) && /[-_]d/.test(file.name);
+        }
+
+        function isModel(file) {
+            return /\.obj$/.test(file.name);
         }
 
         console.log('edit controller files:', files, 'root:', root, textures, targets);
@@ -30,7 +43,22 @@ Ext.define('Admin.view.garment.EditController', {
                 size: file.size,
                 leaf: true
             };
-            isTexture(file) && textures.appendChild(node);
+
+            if (isNormalMap(file)) {
+                node.type = 'normal';
+                textures.appendChild(node);
+            }else if (isDiffuseMap(file)) {
+                node.type = 'diffuse';
+                textures.appendChild(node);
+            }else if (isModel(file) && !baseModel){
+                node.type = 'base model';
+                root.appendChild(node);
+            }else if (isModel(file) && baseModel){
+                node.type = 'target model';
+                targets.appendChild(node);
+            }else {
+                unknown.appendChild(node);
+            }
         });
 
         tree.expandAll();

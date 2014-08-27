@@ -31,12 +31,7 @@ Ext.define('Admin.view.garment.Edit', {
 
     modal: true,
 
-    tbar: [{
-        xtype: 'filefield',
-        text: 'Browse...',
-        buttonText: 'Browse files...',
-        handler: 'onSelectFiles'
-    }],
+//    tbar: [],
 
     items: [{
         xtype: 'treepanel',

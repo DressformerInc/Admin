@@ -7,10 +7,8 @@ Ext.define('Admin.view.garment.SearchController', {
     ],
 
     onViewRendered: function () {
-        var me = this;
-
-        var buttonAddGarment = this.lookupReference('buttonAddGarment');
-        console.log('onViewRendered arguments:', arguments, 'btn id:', buttonAddGarment.getEl().dom.id);
+        var me = this,
+            buttonAddGarment = this.lookupReference('buttonAddGarment');
 
         me.uploader = new plupload.Uploader({
             runtimes: 'html5',
@@ -19,10 +17,10 @@ Ext.define('Admin.view.garment.SearchController', {
             url: 'upload.php',
 
             filters: {
-                max_file_size: '10mb',
+                max_file_size: '50mb',
                 mime_types: [
                     {title: "Image files", extensions: "jpg,gif,png"},
-                    {title: "Zip files", extensions: "zip"}
+                    {title: "Obj files", extensions: "obj"}
                 ]
             },
 
@@ -83,6 +81,7 @@ Ext.define('Admin.view.garment.SearchController', {
 //        win.show();
 //        this.uploader.start();
     },
+
     onEditGarment: function () {
         console.log('row edit', arguments);
         var win = new Admin.view.garment.Edit({
@@ -96,27 +95,4 @@ Ext.define('Admin.view.garment.SearchController', {
 
         win.show();
     }
-
-
-    /*
-     onTicketClick: function(view, rowIdx, colIdx, item, e, rec) {
-     this.fireViewEvent('viewgarment', this.getView(), rec);
-     },
-
-     onRefreshClick: function() {
-     this.getView().getStore().load();
-     },
-
-     renderAssignee: function(v, meta, rec) {
-     return rec.getAssignee().get('name');
-     },
-
-     renderCreator: function(v, meta, rec) {
-     return rec.getCreator().get('name');
-     },
-
-     renderStatus: function(v) {
-     return Admin.model.Garment.getStatusName(v);
-     }
-     */
 });
