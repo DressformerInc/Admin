@@ -31,7 +31,7 @@ Ext.define('Admin.view.garment.Edit', {
 
     modal: true,
 
-//    tbar: [],
+    tbar: [{xtype: 'button', text: 'Browse', reference:'buttonBrowse', handler: 'onBrowse'}],
 
     items: [{
         xtype: 'treepanel',
@@ -93,5 +93,9 @@ Ext.define('Admin.view.garment.Edit', {
         listeners: {
             click: 'onUpload'
         }
-    }]
+    }],
+
+    listeners: {
+        afterrender: 'onViewRendered'
+    }
 });

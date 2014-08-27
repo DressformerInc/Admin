@@ -40,7 +40,7 @@ Ext.define('Admin.view.garment.Search', {
 //    store: Ext.data.StoreManager.lookup('garmentStore'),
 
     tbar: [
-        {text: 'Upload', handler: 'onAddGarment', reference: 'buttonAddGarment' }
+        {text: 'Add', handler: 'onAddGarment', reference: 'buttonAddGarment' }
     ],
 
     columnLines: true,
