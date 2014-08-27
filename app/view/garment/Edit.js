@@ -41,12 +41,17 @@ Ext.define('Admin.view.garment.Edit', {
 //        },
         useArrows: true,
         rootVisible: false,
-        fields: ['name', 'description'],
+        fields: ['assetId', 'name', 'type', 'size', 'status'],
         columns: [{
             xtype: 'treecolumn',
             text: 'Name',
             dataIndex: 'name',
             flex: 1,
+            sortable: true
+        }, {
+            text: 'Type',
+            dataIndex: 'type',
+            width: 200,
             sortable: true
         }, {
             text: 'Size',
@@ -68,10 +73,13 @@ Ext.define('Admin.view.garment.Edit', {
                 return '-';
             }
         }, {
-            text: 'Type',
-            dataIndex: 'type',
-            width: 200,
-            sortable: true
+            text: 'Status',
+            dataIndex: 'status',
+            width: 100,
+            sortable: true,
+            renderer: function (v, m, rec) {
+                return rec.get('assetId') ? 'ok' : v;
+            }
         }],
         root: {
             expanded: true,

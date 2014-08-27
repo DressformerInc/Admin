@@ -62,6 +62,34 @@ Ext.define('Admin.view.garment.EditController', {
         tree.expandAll();
     },
 
+    onFileUploaded: function (up, file, info) {
+        var response = Ext.JSON.decode(info.response),
+            tree = this.lookupReference('treepanel'),
+            root = tree.getRootNode(),
+            node = root.findChild('name', file.name, true);
+
+        if (node && response.length > 0){
+            node.set('assetId', response[0].id);
+            node.save();
+        }
+    },
+
+    onUploadProgress: function (up, file) {
+        var tree = this.lookupReference('treepanel'),
+            root = tree.getRootNode(),
+            node = root.findChild('name', file.name, true);
+
+        if (node) {
+            node.set('status', file.percent);
+            node.save();
+        }
+    },
+
+    onUploadComplete: function(up, files) {
+        Ext.Msg.hide();
+        console.log('[UploadComplete]');
+    },
+
     onViewRendered: function () {
         console.log('onRendered:', arguments);
         var me = this,
@@ -71,7 +99,7 @@ Ext.define('Admin.view.garment.EditController', {
             runtimes: 'html5',
             browse_button: buttonBrowse.getEl().dom.id, // you can pass in id...
             container: me.getView().getEl().dom.id, // ... or DOM Element itself
-            url: 'upload.php',
+            url: 'http://webgl.dressformer.com/assets/',
 
             filters: {
                 max_file_size: '50mb',
@@ -88,9 +116,11 @@ Ext.define('Admin.view.garment.EditController', {
 
                 FilesAdded: me.onFilesAdded.bind(me),
 
-                UploadProgress: function (up, file) {
-                    console.log('file progress:', file);
-                },
+                FileUploaded: me.onFileUploaded.bind(me),
+
+                UploadComplete: me.onUploadComplete.bind(me),
+
+                UploadProgress: me.onUploadProgress.bind(me),
 
                 Error: function (up, err) {
                     console.log('error:', err);
@@ -110,13 +140,10 @@ Ext.define('Admin.view.garment.EditController', {
         Ext.Msg.wait('Uploading', 'Uploading garment...');
         Ext.toast({
             title: 'Upload',
-            html: 'Upload button pressed!!!',
+            html: 'Uploading started!!!',
             align: 'tr',
             bodyPadding: 10
         });
-        setTimeout(function () {
-            Ext.Msg.hide();
-        }, 3000);
     },
 
     onClose: function () {
