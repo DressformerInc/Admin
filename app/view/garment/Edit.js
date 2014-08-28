@@ -7,6 +7,10 @@
 Ext.define('Admin.view.garment.Edit', {
     extend: 'Ext.window.Window',
 
+    requires: [
+        'Admin.store.FileType'
+    ],
+
     controller: 'garmentedit', // links to 'Admin.view.garment.EditController'
     viewModel: {
         type: 'garmentedit'
@@ -31,7 +35,10 @@ Ext.define('Admin.view.garment.Edit', {
 
     modal: true,
 
-    tbar: [{xtype: 'button', text: 'Browse', reference:'buttonBrowse', handler: 'onBrowse'}],
+    tbar: [
+        {xtype: 'button', text: 'Browse', reference:'buttonBrowse', handler: 'onBrowse'},
+        {xtype: 'button', text: 'Upload', reference:'buttonUpload', handler: 'onUpload'}
+    ],
 
     items: [{
         xtype: 'treepanel',
@@ -39,6 +46,28 @@ Ext.define('Admin.view.garment.Edit', {
 //        bind: {
 //            store: '{garmentData}'
 //        },
+        viewConfig: {
+            plugins: {
+                ptype: 'treeviewdragdrop',
+                enableDrag: true,
+                enableDrop: true
+            },
+            listeners: {
+                nodedragover: function(targetNode, position, dragData){
+//                var rec = dragData.records[0],
+//                    isFirst = targetNode.isFirst(),
+//                    canDropFirst = rec.get('canDropOnFirst'),
+//                    canDropSecond = rec.get('canDropOnSecond');
+                    console.log('leaf:', targetNode.get('leaf'));
+                    return targetNode.get('leaf') === false;
+                }
+            }
+        },
+        selType: 'cellmodel',
+        plugins: {
+            ptype: 'cellediting',
+            clicksToEdit: 1
+        },
         useArrows: true,
         rootVisible: false,
         fields: ['assetId', 'name', 'type', 'size', 'status'],
@@ -49,10 +78,38 @@ Ext.define('Admin.view.garment.Edit', {
             flex: 1,
             sortable: true
         }, {
+            text: 'Weight',
+            dataIndex: 'weight',
+            width: 100,
+            sortable: true,
+            editor: {
+                xtype: 'textfield'
+            }
+        }, {
             text: 'Type',
+//            hidden: true,
             dataIndex: 'type',
-            width: 200,
-            sortable: true
+            width: 100,
+            sortable: true,
+            editor: {
+                xtype: 'combobox',
+                store: Ext.create('Ext.data.Store', {
+                    fields: ['name'],
+                    data : [
+                        {"name":"base"},
+                        {"name":"normal"},
+                        {"name":"diffuse"},
+                        {"name":"height"},
+                        {"name":"chest"},
+                        {"name":"underbust"},
+                        {"name":"waist"},
+                        {"name":"hips"}
+                    ]
+                }),
+                editable: false,
+                displayField: 'name',
+                valueField: 'name'
+            }
         }, {
             text: 'Size',
             dataIndex: 'size',
@@ -84,8 +141,15 @@ Ext.define('Admin.view.garment.Edit', {
         root: {
             expanded: true,
             children: [
+                { name: "base",  leaf: false },
                 { name: "textures",  leaf: false },
-                { name: "targets",  leaf: false },
+                { name: "targets",  leaf: false, children: [
+                    {name: 'height',  leaf: false},
+                    {name: 'chest',  leaf: false},
+                    {name: 'underbust',  leaf: false},
+                    {name: 'waist',  leaf: false},
+                    {name: 'hips',  leaf: false}
+                ] },
                 { name: "unknown", leaf: false }
             ]
         }
@@ -97,9 +161,9 @@ Ext.define('Admin.view.garment.Edit', {
             click: 'onClose'
         }
     }, '->', {
-        text: 'Upload',
+        text: 'Create',
         listeners: {
-            click: 'onUpload'
+            click: 'onCreate'
         }
     }],
 
