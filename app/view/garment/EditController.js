@@ -9,13 +9,27 @@ Ext.define('Admin.view.garment.EditController', {
         'Ext.window.Toast'
     ],
 
+    showError: function (msg) {
+        Ext.Msg.show({
+            title:'Error',
+            message: msg,
+            buttons: Ext.Msg.YES,
+            icon: Ext.Msg.ERROR
+        });
+    },
+
     createGarment: function (geometryId, cb) {
         console.log('create garment:', arguments);
-        var normalId = 'blahblah',
-            diffuseId = 'blahblah';
+        var fieldName = this.lookupReference('fieldName'),
+            tree = this.lookupReference('treepanel'),
+            root = tree.getRootNode(),
+            base = root.findChild('name', 'base'),
+            textures = root.findChild('name', 'textures'),
+            normalId = textures.findChild('type', 'normal').get('assetId'),
+            diffuseId = textures.findChild('type', 'diffuse').get('assetId');
 
         var params = {
-            name: 'blah',
+            name: fieldName.getValue(),
             assets: {
                 geometry: 'webgl.dressformer.com/assets/geometry/'+geometryId,
                 normal: 'webgl.dressformer.com/assets/image/'+normalId,
@@ -24,8 +38,8 @@ Ext.define('Admin.view.garment.EditController', {
         };
 
         Ext.Ajax.request({
-            url: 'http://webgl.dressformer.com/assets/garments',
-            params: params,
+            url: 'http://webgl.dressformer.com/api/garments',
+            jsonData: params,
             success: function (response) {
                 try {
                     var json = Ext.JSON.decode(response.responseText);
@@ -42,7 +56,8 @@ Ext.define('Admin.view.garment.EditController', {
     },
 
     createGeometry: function (cb) {
-        var tree = this.lookupReference('treepanel'),
+        var me = this,
+            tree = this.lookupReference('treepanel'),
             root = tree.getRootNode(),
             base = root.findChild('name', 'base'),
             targets = root.findChild('name', 'targets'),
@@ -59,7 +74,7 @@ Ext.define('Admin.view.garment.EditController', {
             };
 
             node.eachChild(function (child) {
-                var weight = child.get('weight');
+                var weight = +child.get('weight');
                 section.sources.push({
                     id: child.get('assetId'),
                     weight: weight
@@ -74,20 +89,15 @@ Ext.define('Admin.view.garment.EditController', {
         console.log('create geometry params:', params);
 
         if (!ok) {
-            Ext.Msg.show({
-                title:'Error',
-                message: 'All weights must be filled!',
-                buttons: Ext.Msg.YES,
-                icon: Ext.Msg.ERROR
-            });
+            me.showError('All weights must be filled!');
             return;
         }
 
         Ext.Ajax.request({
             url: 'http://webgl.dressformer.com/assets/geometry',
-            params: params,
+            jsonData: params,
 //            method: 'POST',
-            cors: true,
+//            cors: true,
             success: function (response) {
                 try {
                     var json = Ext.JSON.decode(response.responseText);
@@ -104,7 +114,8 @@ Ext.define('Admin.view.garment.EditController', {
     },
 
     onFilesAdded: function (up, files) {
-        var tree = this.lookupReference('treepanel'),
+        var fieldName = this.lookupReference('fieldName'),
+            tree = this.lookupReference('treepanel'),
             root = tree.getRootNode(),
             base = root.findChild('name', 'base'),
             textures = root.findChild('name', 'textures'),
@@ -116,8 +127,7 @@ Ext.define('Admin.view.garment.EditController', {
                 waist: targets.findChild('name', 'waist'),
                 hips: targets.findChild('name', 'hips')
             },
-            unknown = root.findChild('name', 'unknown'),
-            baseModel;
+            unknown = root.findChild('name', 'unknown');
 
         function isTexture(file) {
             return /image/i.test(file.type);
@@ -135,9 +145,18 @@ Ext.define('Admin.view.garment.EditController', {
             return /\.obj$/.test(file.name);
         }
 
+        function isMtl(file) {
+            return /\.mtl&/.test(file.name);
+        }
+
         function isSection(name, file) {
-            var re = new RegExp('[_-]' + name, 'i');
+            var re = new RegExp('[_-]?' + name, 'i');
             return isModel(file) && re.test(file.name);
+        }
+
+        function getGarmentName(fileName) {
+            var parts = fileName.split('.');
+            return parts[0] || 'unnamed';
         }
 
         files.forEach(function (file) {
@@ -161,15 +180,16 @@ Ext.define('Admin.view.garment.EditController', {
                         var sectionNode = sections[section];
                         if (isSection(section, file)) {
                             sectionFind = true;
-                            node.type = 'target ' + section;
+                            node.type = section;
                             sectionNode.appendChild(node);
                         }
                     }
                 }
 
                 if (!sectionFind) {
-                    node.type = 'base model';
+                    node.type = 'base';
                     base.appendChild(node);
+                    fieldName.setValue(getGarmentName(file.name));
                 }
             } else {
                 unknown.appendChild(node);
@@ -264,14 +284,24 @@ Ext.define('Admin.view.garment.EditController', {
 
     onCreate: function () {
         var me = this;
+        Ext.Msg.wait('Wait...', 'Creating garment...');
         me.createGeometry(function (error, geometryId) {
             if (error) {
+                Ext.Msg.hide();
+                me.showError('Ooops!\nCreate geometry fail...');
                 console.log('error:', error);
                 return;
             }
 
             me.createGarment(geometryId, function (error, garmentId) {
                 console.log('create garment callback:', arguments);
+                Ext.Msg.hide();
+                if (error) {
+                    me.showError('Ooops!\nCreate garment fail...');
+                    console.log('error:', error);
+                    return;
+                }
+                Ext.Msg.alert('Status', 'Garment created successfully.');
             });
 
         });

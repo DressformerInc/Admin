@@ -48,6 +48,7 @@ Ext.define('Admin.view.garment.Search', {
     columns: [
         {
             text: 'ID',
+            hidden: true,
             dataIndex: 'id'
         },
         {

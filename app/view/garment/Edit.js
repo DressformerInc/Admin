@@ -37,7 +37,8 @@ Ext.define('Admin.view.garment.Edit', {
 
     tbar: [
         {xtype: 'button', text: 'Browse', reference:'buttonBrowse', handler: 'onBrowse'},
-        {xtype: 'button', text: 'Upload', reference:'buttonUpload', handler: 'onUpload'}
+        {xtype: 'button', text: 'Upload', reference:'buttonUpload', handler: 'onUpload'},
+        {xtype: 'textfield', emptyText: 'Garment name', reference:'fieldName'}
     ],
 
     items: [{
