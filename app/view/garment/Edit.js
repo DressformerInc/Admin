@@ -23,10 +23,11 @@ Ext.define('Admin.view.garment.Edit', {
     width: 800,
     minHeight: 400,
     height: 600,
-    layout: {
-        type: 'vbox',
-        align: 'stretch'
-    },
+//    layout: {
+//        type: 'vbox',
+//        align: 'stretch'
+//    },
+    layout: 'fit',
 
     // As a Window the default property we are binding is "title":
     bind: {
@@ -51,6 +52,7 @@ Ext.define('Admin.view.garment.Edit', {
         viewConfig: {
             plugins: {
                 ptype: 'treeviewdragdrop',
+                containerScroll: true,
                 enableDrag: true,
                 enableDrop: true
             },
