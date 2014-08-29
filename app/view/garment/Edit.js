@@ -38,7 +38,8 @@ Ext.define('Admin.view.garment.Edit', {
     tbar: [
         {xtype: 'button', text: 'Browse', reference:'buttonBrowse', handler: 'onBrowse'},
         {xtype: 'button', text: 'Upload', reference:'buttonUpload', handler: 'onUpload'},
-        {xtype: 'textfield', emptyText: 'Garment name', reference:'fieldName'}
+        {xtype: 'textfield', emptyText: 'Garment name', reference:'fieldName'},
+        {xtype: 'button', text: 'Create geometry', reference:'buttonCreateGeometry', handler: 'onCreateGeometry'}
     ],
 
     items: [{
@@ -100,6 +101,7 @@ Ext.define('Admin.view.garment.Edit', {
                         {"name":"base"},
                         {"name":"normal"},
                         {"name":"diffuse"},
+                        {"name":"specular"},
                         {"name":"height"},
                         {"name":"chest"},
                         {"name":"underbust"},

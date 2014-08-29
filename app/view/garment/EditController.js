@@ -11,7 +11,7 @@ Ext.define('Admin.view.garment.EditController', {
 
     showError: function (msg) {
         Ext.Msg.show({
-            title:'Error',
+            title: 'Error',
             message: msg,
             buttons: Ext.Msg.YES,
             icon: Ext.Msg.ERROR
@@ -19,23 +19,33 @@ Ext.define('Admin.view.garment.EditController', {
     },
 
     createGarment: function (geometryId, cb) {
-        console.log('create garment:', arguments);
-        var fieldName = this.lookupReference('fieldName'),
+        var assets = 'webgl.dressformer.com/assets/',
+            fieldName = this.lookupReference('fieldName'),
             tree = this.lookupReference('treepanel'),
             root = tree.getRootNode(),
             base = root.findChild('name', 'base'),
             textures = root.findChild('name', 'textures'),
-            normalId = textures.findChild('type', 'normal').get('assetId'),
-            diffuseId = textures.findChild('type', 'diffuse').get('assetId');
+            normal = textures.findChild('type', 'normal'),
+            normalId = normal && normal.get('assetId'),
+            diffuse = textures.findChild('type', 'diffuse'),
+            diffuseId = diffuse && diffuse.get('assetId'),
+            specular = textures.findChild('type', 'specular'),
+            specularId = specular && specular.get('assetId'),
+            params = {
+                name: fieldName.getValue(),
+                assets: {}
+            };
 
-        var params = {
-            name: fieldName.getValue(),
-            assets: {
-                geometry: 'webgl.dressformer.com/assets/geometry/'+geometryId,
-                normal: 'webgl.dressformer.com/assets/image/'+normalId,
-                diffuse: 'webgl.dressformer.com/assets/image/'+diffuseId
-            }
-        };
+        if (!geometryId) {
+            cb('geometryId is empty');
+            return;
+        }
+
+        params.geometry = assets+'geometry/'+geometryId;
+
+        if (normalId) params.assets.normal = assets+'image/'+normalId;
+        if (diffuseId) params.assets.diffuse = assets+'image/'+diffuseId;
+        if (specularId) params.assets.specular = assets+'image/'+specularId;
 
         Ext.Ajax.request({
             url: 'http://webgl.dressformer.com/api/garments',
@@ -45,7 +55,7 @@ Ext.define('Admin.view.garment.EditController', {
                     var json = Ext.JSON.decode(response.responseText);
                     console.log('response json:', json);
                     cb(null, json.id);
-                }catch(e){
+                } catch (e) {
                     cb(e);
                 }
             },
@@ -62,10 +72,15 @@ Ext.define('Admin.view.garment.EditController', {
             base = root.findChild('name', 'base'),
             targets = root.findChild('name', 'targets'),
             params = {
-                base: base.firstChild.get('assetId'),
+                base: base && base.firstChild && base.firstChild.get('assetId'),
                 morph_targets: []
             },
             ok = true;
+
+        if (!params.base) {
+            cb('base is empty!');
+            return;
+        }
 
         targets.eachChild(function (node) {
             var section = {
@@ -96,14 +111,12 @@ Ext.define('Admin.view.garment.EditController', {
         Ext.Ajax.request({
             url: 'http://webgl.dressformer.com/assets/geometry',
             jsonData: params,
-//            method: 'POST',
-//            cors: true,
             success: function (response) {
                 try {
                     var json = Ext.JSON.decode(response.responseText);
                     console.log('response json:', json);
                     cb(null, json.id);
-                }catch(e){
+                } catch (e) {
                     cb(e);
                 }
             },
@@ -305,6 +318,19 @@ Ext.define('Admin.view.garment.EditController', {
             });
 
         });
+    },
+
+    onCreateGeometry: function () {
+        var me = this;
+
+        me.createGeometry(function (error, geometryId) {
+            if (error) {
+                me.showError(error);
+            }else {
+                Ext.Msg.alert('GeometryId', geometryId);
+            }
+        })
+
     },
 
     onClose: function () {
