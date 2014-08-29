@@ -137,6 +137,7 @@ Ext.define('Admin.view.garment.EditController', {
                 height: targets.findChild('name', 'height'),
                 chest: targets.findChild('name', 'chest'),
                 underbust: targets.findChild('name', 'underbust'),
+                underchest: targets.findChild('name', 'underbust'),
                 waist: targets.findChild('name', 'waist'),
                 hips: targets.findChild('name', 'hips')
             },

@@ -56,16 +56,21 @@ Ext.define('Admin.view.garment.Edit', {
             },
             listeners: {
                 nodedragover: function(targetNode, position, dragData){
-//                var rec = dragData.records[0],
+                var rec = dragData.records[0];
 //                    isFirst = targetNode.isFirst(),
 //                    canDropFirst = rec.get('canDropOnFirst'),
 //                    canDropSecond = rec.get('canDropOnSecond');
                     console.log('leaf:', targetNode.get('leaf'));
-                    return targetNode.get('leaf') === false;
+                    return !targetNode.get('leaf') && rec.get('leaf');
+                },
+                drop: function (node, data, overModel, dropPosition, eOpts) {
+                    data.view.getSelectionModel().select(node);
                 }
             }
         },
         selType: 'cellmodel',
+//        selType: 'treemodel',
+//        selType: 'rowmodel',
         plugins: {
             ptype: 'cellediting',
             clicksToEdit: 1
