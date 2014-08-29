@@ -154,6 +154,10 @@ Ext.define('Admin.view.garment.EditController', {
             return isTexture(file) && /[-_]d/i.test(file.name);
         }
 
+        function isSpecularMap(file) {
+            return isTexture(file) && /[-_]s/i.test(file.name);
+        }
+
         function isModel(file) {
             return /\.obj$/.test(file.name);
         }
@@ -185,6 +189,9 @@ Ext.define('Admin.view.garment.EditController', {
                 textures.appendChild(node);
             } else if (isDiffuseMap(file)) {
                 node.type = 'diffuse';
+                textures.appendChild(node);
+            }  else if (isSpecularMap(file)) {
+                node.type = 'specular';
                 textures.appendChild(node);
             } else if (isModel(file)) {
                 var sectionFind = false;
