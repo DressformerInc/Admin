@@ -14,13 +14,8 @@ Ext.define('Admin.view.main.MainController', {
 
     alias: 'controller.main',
 
-    onClickButton: function () {
-        Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
-    },
-
-    onConfirm: function (choice) {
-        if (choice === 'yes') {
-            console.log('yes', choice);
-        }
+    onItemClick: function (self, rec) {
+        var tab = this.lookupReference('maintab');
+        tab.setActiveTab(rec.get('tabItemId'));
     }
 });

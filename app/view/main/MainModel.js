@@ -17,7 +17,8 @@ Ext.define('Admin.view.main.MainModel', {
             root: {
                 expanded: true,
                 children: [
-                    { name: "Garments", leaf: true }
+                    { name: "Garments", tabItemId: 0, leaf: true },
+                    { name: "Geometry", tabItemId: 1, leaf: true }
                 ]
             }
         })

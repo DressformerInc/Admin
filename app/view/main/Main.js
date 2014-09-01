@@ -49,15 +49,22 @@ Ext.define('Admin.view.main.Main', {
                     flex: 1,
                     dataIndex: 'name'
                 }
-            ]
+            ],
+            listeners: {
+                itemclick: 'onItemClick'
+            }
 
         },
         {
             region: 'center',
             xtype: 'tabpanel',
+            reference: 'maintab',
             items: [
                 {
                     xtype: 'garmentsearch'
+                },
+                {
+                    xtype: 'geometrysearch'
                 }
             ]
         }

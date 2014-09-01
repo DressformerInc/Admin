@@ -3,8 +3,8 @@
  */
 Ext.define('Admin.store.Geometry', {
     extend: 'Ext.data.Store',
-    storeId: 'geometryStore',
-    model: 'Admin.model.Garment',
+    alias: 'store.geometry',
+    model: 'Admin.model.Geometry',
     autoLoad: true,
     data: [
         {id: '1', name: 'name1'},
