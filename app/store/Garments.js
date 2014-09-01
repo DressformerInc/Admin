@@ -9,7 +9,7 @@ Ext.define('Admin.store.Garments', {
     autoLoad: true,
     proxy: {
         type: 'ajax',
-        url: Admin.class.Config.api.garments,
+        url: Admin.common.Config.api.garments,
         reader: {
             type: 'json'
         }

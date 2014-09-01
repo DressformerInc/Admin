@@ -9,7 +9,7 @@ Ext.define('Admin.Application', {
     name: 'Admin',
 
     requires: [
-      'Admin.class.*'
+      'Admin.common.*'
     ],
 
     stores: [

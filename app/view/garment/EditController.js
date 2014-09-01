@@ -21,7 +21,7 @@ Ext.define('Admin.view.garment.EditController', {
     },
 
     createGarment: function (geometryId, cb) {
-        var assets = Admin.class.Config.api.assets,
+        var assets = Admin.common.Config.api.assets,
             fieldName = this.lookupReference('fieldName'),
             fieldSize = this.lookupReference('fieldSize'),
             tree = this.lookupReference('treepanel'),
@@ -52,7 +52,7 @@ Ext.define('Admin.view.garment.EditController', {
         if (specularId) params.assets.specular = assets + 'image/' + specularId;
 
         Ext.Ajax.request({
-            url: Admin.class.Config.api.garments,
+            url: Admin.common.Config.api.garments,
             jsonData: params,
             success: function (response) {
                 try {
@@ -113,7 +113,7 @@ Ext.define('Admin.view.garment.EditController', {
         }
 
         Ext.Ajax.request({
-            url: Admin.class.Config.api.assets+'geometry/',
+            url: Admin.common.Config.api.assets+'geometry/',
             jsonData: params,
             success: function (response) {
                 try {

@@ -16,8 +16,5 @@ Ext.define('Admin.view.garment.SearchModel', {
     
     stores: {
         garments: 'Garments'
-//        {
-//            source: 'Garments'
-//        }
     }
 });
