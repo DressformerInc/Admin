@@ -16,20 +16,12 @@ Ext.define('Admin.view.garment.Edit', {
         type: 'garmentedit'
     },
 
-    init: function () {
-        console.log('garment.Edit init:', arguments);
-    },
-
     width: 800,
     minHeight: 400,
     height: 600,
-//    layout: {
-//        type: 'vbox',
-//        align: 'stretch'
-//    },
+
     layout: 'fit',
 
-    // As a Window the default property we are binding is "title":
     bind: {
         title: '{title}'
     },
@@ -37,10 +29,11 @@ Ext.define('Admin.view.garment.Edit', {
     modal: true,
 
     tbar: [
-        {xtype: 'button', text: 'Browse', reference:'buttonBrowse', handler: 'onBrowse'},
-        {xtype: 'button', text: 'Upload', reference:'buttonUpload', handler: 'onUpload'},
+        {xtype: 'button', text: 'Select files...', reference:'buttonBrowse', handler: 'onBrowse'},
+//        {xtype: 'button', text: 'Upload', reference:'buttonUpload', handler: 'onUpload'},
         {xtype: 'textfield', emptyText: 'Garment name', reference:'fieldName'},
-        {xtype: 'button', text: 'Create geometry', reference:'buttonCreateGeometry', handler: 'onCreateGeometry'}
+        {xtype: 'textfield', emptyText: 'Size', reference:'fieldSize'}
+//        {xtype: 'button', text: 'Create geometry', reference:'buttonCreateGeometry', handler: 'onCreateGeometry'}
     ],
 
     items: [{
@@ -71,8 +64,6 @@ Ext.define('Admin.view.garment.Edit', {
             }
         },
         selType: 'cellmodel',
-//        selType: 'treemodel',
-//        selType: 'rowmodel',
         plugins: {
             ptype: 'cellediting',
             clicksToEdit: 1
@@ -165,12 +156,7 @@ Ext.define('Admin.view.garment.Edit', {
         }
     }],
 
-    buttons: [{
-        text: 'Close',
-        listeners: {
-            click: 'onClose'
-        }
-    }, '->', {
+    buttons: ['->', {
         text: 'Create',
         listeners: {
             click: 'onCreate'

@@ -9,6 +9,8 @@ Ext.define('Admin.view.garment.EditController', {
         'Ext.window.Toast'
     ],
 
+    isUploaded: false,
+
     showError: function (msg) {
         Ext.Msg.show({
             title: 'Error',
@@ -19,8 +21,9 @@ Ext.define('Admin.view.garment.EditController', {
     },
 
     createGarment: function (geometryId, cb) {
-        var assets = 'webgl.dressformer.com/assets/',
+        var assets = Admin.class.Config.api.assets,
             fieldName = this.lookupReference('fieldName'),
+            fieldSize = this.lookupReference('fieldSize'),
             tree = this.lookupReference('treepanel'),
             root = tree.getRootNode(),
             base = root.findChild('name', 'base'),
@@ -33,6 +36,7 @@ Ext.define('Admin.view.garment.EditController', {
             specularId = specular && specular.get('assetId'),
             params = {
                 name: fieldName.getValue(),
+                size_name: fieldSize.getValue(),
                 assets: {}
             };
 
@@ -41,11 +45,11 @@ Ext.define('Admin.view.garment.EditController', {
             return;
         }
 
-        params.geometry = assets+'geometry/'+geometryId;
+        params.geometry = assets + 'geometry/' + geometryId;
 
-        if (normalId) params.assets.normal = assets+'image/'+normalId;
-        if (diffuseId) params.assets.diffuse = assets+'image/'+diffuseId;
-        if (specularId) params.assets.specular = assets+'image/'+specularId;
+        if (normalId) params.assets.normal = assets + 'image/' + normalId;
+        if (diffuseId) params.assets.diffuse = assets + 'image/' + diffuseId;
+        if (specularId) params.assets.specular = assets + 'image/' + specularId;
 
         Ext.Ajax.request({
             url: 'http://webgl.dressformer.com/api/garments',
@@ -126,6 +130,30 @@ Ext.define('Admin.view.garment.EditController', {
         });
     },
 
+    createGeometryAndGarment: function () {
+        var me = this;
+        me.createGeometry(function (error, geometryId) {
+            if (error) {
+                Ext.Msg.hide();
+                me.showError('Ooops!\nCreate geometry fail...');
+                console.log('error:', error);
+                return;
+            }
+
+            me.createGarment(geometryId, function (error, garmentId) {
+                console.log('create garment callback:', arguments);
+                Ext.Msg.hide();
+                if (error) {
+                    me.showError('Ooops!\nCreate garment fail...');
+                    console.log('error:', error);
+                    return;
+                }
+                Ext.Msg.alert('Status', 'Garment created successfully.');
+            });
+
+        });
+    },
+
     onFilesAdded: function (up, files) {
         var fieldName = this.lookupReference('fieldName'),
             tree = this.lookupReference('treepanel'),
@@ -137,7 +165,7 @@ Ext.define('Admin.view.garment.EditController', {
                 height: targets.findChild('name', 'height'),
                 chest: targets.findChild('name', 'chest'),
                 underbust: targets.findChild('name', 'underbust'),
-                underchest: targets.findChild('name', 'underbust'),
+                underbust: targets.findChild('name', 'underbust'),
                 waist: targets.findChild('name', 'waist'),
                 hips: targets.findChild('name', 'hips')
             },
@@ -191,7 +219,7 @@ Ext.define('Admin.view.garment.EditController', {
             } else if (isDiffuseMap(file)) {
                 node.type = 'diffuse';
                 textures.appendChild(node);
-            }  else if (isSpecularMap(file)) {
+            } else if (isSpecularMap(file)) {
                 node.type = 'specular';
                 textures.appendChild(node);
             } else if (isModel(file)) {
@@ -244,8 +272,9 @@ Ext.define('Admin.view.garment.EditController', {
     },
 
     onUploadComplete: function (up, files) {
-        Ext.Msg.hide();
         console.log('[UploadComplete]');
+        this.isUploaded = true;
+        this.createGeometryAndGarment();
     },
 
     onViewRendered: function () {
@@ -262,7 +291,7 @@ Ext.define('Admin.view.garment.EditController', {
                 max_file_size: '50mb',
                 mime_types: [
                     {title: "Image files", extensions: "jpg,gif,png"},
-                    {title: "Obj files", extensions: "obj"}
+                    {title: "Obj/mtl files", extensions: "obj,mtl"}
                 ]
             },
 
@@ -293,39 +322,17 @@ Ext.define('Admin.view.garment.EditController', {
     },
 
     onUpload: function () {
-        this.uploader.start();
-        Ext.Msg.wait('Uploading', 'Uploading garment...');
-        Ext.toast({
-            title: 'Upload',
-            html: 'Uploading started!!!',
-            align: 'tr',
-            bodyPadding: 10
-        });
+
     },
 
     onCreate: function () {
-        var me = this;
         Ext.Msg.wait('Wait...', 'Creating garment...');
-        me.createGeometry(function (error, geometryId) {
-            if (error) {
-                Ext.Msg.hide();
-                me.showError('Ooops!\nCreate geometry fail...');
-                console.log('error:', error);
-                return;
-            }
 
-            me.createGarment(geometryId, function (error, garmentId) {
-                console.log('create garment callback:', arguments);
-                Ext.Msg.hide();
-                if (error) {
-                    me.showError('Ooops!\nCreate garment fail...');
-                    console.log('error:', error);
-                    return;
-                }
-                Ext.Msg.alert('Status', 'Garment created successfully.');
-            });
-
-        });
+        if (this.isUploaded) {
+            this.createGeometryAndGarment();
+        } else {
+            this.uploader.start();
+        }
     },
 
     onCreateGeometry: function () {
@@ -334,20 +341,10 @@ Ext.define('Admin.view.garment.EditController', {
         me.createGeometry(function (error, geometryId) {
             if (error) {
                 me.showError(error);
-            }else {
+            } else {
                 Ext.Msg.alert('GeometryId', geometryId);
             }
         })
 
-    },
-
-    onClose: function () {
-        console.log('files:', this.files);
-        Ext.toast({
-            title: 'Close',
-            html: 'Close button pressed!!!',
-            align: 'tr',
-            bodyPadding: 10
-        });
     }
 });
