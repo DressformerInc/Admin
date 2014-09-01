@@ -38,6 +38,7 @@ Ext.define('Admin.view.main.Main', {
             width: 250,
             split: true,
             collapsible: true,
+            collapsed: true,
             useArrows: true,
             rootVisible: false,
             multiSelect: false,
