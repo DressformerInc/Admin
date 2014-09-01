@@ -4,12 +4,11 @@
 Ext.define('Admin.store.Garment', {
     extend: 'Ext.data.Store',
     alias: 'store.garment',
-    storeId: 'garmentStore',
     model: 'Admin.model.Garment',
     autoLoad: true,
     proxy: {
         type: 'ajax',
-        url: 'http://webgl.dressformer.com/api/garments',
+        url: Admin.class.Config.api.garments,
         reader: {
             type: 'json'
         }

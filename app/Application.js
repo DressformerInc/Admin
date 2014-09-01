@@ -8,11 +8,16 @@ Ext.define('Admin.Application', {
     
     name: 'Admin',
 
+    requires: [
+      'Admin.class.*'
+    ],
+
     stores: [
         // TODO: add global / shared stores here
     ],
     
     launch: function () {
         // TODO - Launch the application
+        console.log('Config:', Admin.class.Config.api);
     }
 });
