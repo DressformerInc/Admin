@@ -5,10 +5,6 @@ Ext.define('Admin.view.garment.SearchModel', {
     extend: 'Ext.app.ViewModel',
     alias: 'viewmodel.garmentsearch',
 
-    requires: [
-        'Admin.model.*',
-        'Admin.store.Garment'
-    ],
     
     data: {
         defaultStatus: 2
@@ -19,25 +15,9 @@ Ext.define('Admin.view.garment.SearchModel', {
     },
     
     stores: {
-        garments: {
-            type: 'garment'
-        },
-
-        statuses: {
-            fields: ['id', 'name'],
-            data: [{
-                id: -1,
-                name: '-- All --'
-            }, {
-                id: 1,
-                name: 'Pending'
-            }, {
-                id: 2,
-                name: 'Open'
-            }, {
-                id: 3,
-                name: 'Closed'
-            }]
-        }
+        garments: 'Garments'
+//        {
+//            source: 'Garments'
+//        }
     }
 });

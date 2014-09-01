@@ -34,5 +34,10 @@ Ext.define('Admin.view.garment.SearchController', {
         });
 
         win.show();
+    },
+
+    onReload: function () {
+        var store = Ext.getStore('Garments');
+        store.reload();
     }
 });

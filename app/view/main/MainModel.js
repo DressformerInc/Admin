@@ -12,7 +12,6 @@ Ext.define('Admin.view.main.MainModel', {
 
     stores: {
         menu: Ext.create('Ext.data.TreeStore', {
-            model: 'Admin.model.Menu',
             rootVisible: false,
             root: {
                 expanded: true,

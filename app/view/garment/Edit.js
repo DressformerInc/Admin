@@ -158,9 +158,7 @@ Ext.define('Admin.view.garment.Edit', {
 
     buttons: ['->', {
         text: 'Create',
-        listeners: {
-            click: 'onCreate'
-        }
+        handler: 'onCreate'
     }],
 
     listeners: {

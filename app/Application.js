@@ -13,11 +13,11 @@ Ext.define('Admin.Application', {
     ],
 
     stores: [
-        // TODO: add global / shared stores here
+        'Garments',
+        'Geometry'
     ],
     
     launch: function () {
         // TODO - Launch the application
-        console.log('Config:', Admin.class.Config.api);
     }
 });

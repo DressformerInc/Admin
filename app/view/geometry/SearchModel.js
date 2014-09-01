@@ -7,7 +7,7 @@ Ext.define('Admin.view.geometry.SearchModel', {
 
     requires: [
         'Admin.model.*',
-        'Admin.store.Garment'
+        'Admin.store.Garments'
     ],
 
     

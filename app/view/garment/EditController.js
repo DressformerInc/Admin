@@ -52,7 +52,7 @@ Ext.define('Admin.view.garment.EditController', {
         if (specularId) params.assets.specular = assets + 'image/' + specularId;
 
         Ext.Ajax.request({
-            url: 'http://webgl.dressformer.com/api/garments',
+            url: Admin.class.Config.api.garments,
             jsonData: params,
             success: function (response) {
                 try {
@@ -113,7 +113,7 @@ Ext.define('Admin.view.garment.EditController', {
         }
 
         Ext.Ajax.request({
-            url: 'http://webgl.dressformer.com/assets/geometry',
+            url: Admin.class.Config.api.assets+'geometry/',
             jsonData: params,
             success: function (response) {
                 try {
@@ -148,7 +148,8 @@ Ext.define('Admin.view.garment.EditController', {
                     console.log('error:', error);
                     return;
                 }
-                Ext.Msg.alert('Status', 'Garment created successfully.');
+                Admin.app.getGarmentsStore().reload();
+                me.closeView();
             });
 
         });
@@ -319,10 +320,6 @@ Ext.define('Admin.view.garment.EditController', {
 
     onBrowse: function () {
         console.log('onBrowse', arguments);
-    },
-
-    onUpload: function () {
-
     },
 
     onCreate: function () {
