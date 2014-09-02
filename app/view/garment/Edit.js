@@ -30,7 +30,6 @@ Ext.define('Admin.view.garment.Edit', {
 
     tbar: [
         {xtype: 'button', text: 'Select files...', reference:'buttonBrowse', handler: 'onBrowse'},
-//        {xtype: 'button', text: 'Upload', reference:'buttonUpload', handler: 'onUpload'},
         {xtype: 'textfield', emptyText: 'Garment name', reference:'fieldName'},
         {xtype: 'textfield', emptyText: 'Size', reference:'fieldSize'}
 //        {xtype: 'button', text: 'Create geometry', reference:'buttonCreateGeometry', handler: 'onCreateGeometry'}
