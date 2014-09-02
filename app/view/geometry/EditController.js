@@ -11,6 +11,79 @@ Ext.define('Admin.view.geometry.EditController', {
 
     isUploaded: false,
 
+    initGeometry: function (geometry) {
+        var tree = this.lookupReference('treepanel'),
+            fieldName = this.lookupReference('fieldName'),
+            fieldDefault = this.lookupReference('fieldDefault'),
+            root = tree.getRootNode(),
+            base = root.findChild('name', 'base'),
+            targets = root.findChild('name', 'targets'),
+            sections = {
+                height: targets.findChild('name', 'height'),
+                chest: targets.findChild('name', 'chest'),
+                underbust: targets.findChild('name', 'underbust'),
+                underchest: targets.findChild('name', 'underbust'),
+                waist: targets.findChild('name', 'waist'),
+                hips: targets.findChild('name', 'hips')
+            },
+            baseData = geometry.get('base'),
+            targetsData = geometry.get('morph_targets');
+
+        if (baseData) {
+            base.appendChild({
+                assetId: baseData.id,
+                name: baseData.origin_name,
+                type: 'base',
+                leaf: true
+            });
+        }
+
+        if (targetsData && targetsData.length > 0){
+            for (var i= 0, li=targetsData.length; i<li; ++i){
+                var target = targetsData[i],
+                    type = target.section;
+
+                for(var j= 0, lj=target.sources.length; j<lj; ++j){
+                    var source = target.sources[j];
+
+                    sections[type].appendChild({
+                        name: source.origin_name,
+                        assetId: source.id,
+                        weight: source.weight,
+                        type: type,
+                        leaf: true
+                    });
+                }
+            }
+        }
+
+
+        tree.expandAll();
+    },
+
+    init: function (view) {
+        var data = this.getViewModel().data,
+            btnCreate = this.lookupReference('buttonCreate'),
+            btnDelete = this.lookupReference('buttonDelete'),
+            btnUpdate = this.lookupReference('buttonUpdate');
+
+        if (data.theGeometry) {
+            this.initGeometry(data.theGeometry);
+            btnCreate.hide();
+            btnDelete.show();
+            btnUpdate.show();
+        } else {
+            btnCreate.show();
+            btnUpdate.hide();
+            btnDelete.hide();
+        }
+
+    },
+
+    getData: function () {
+
+    },
+
     showError: function (msg) {
         Ext.Msg.show({
             title: 'Error',
@@ -29,14 +102,17 @@ Ext.define('Admin.view.geometry.EditController', {
             base = root.findChild('name', 'base'),
             targets = root.findChild('name', 'targets'),
             params = {
-                base: base && base.firstChild && base.firstChild.get('assetId'),
+                base: {},
                 name: fieldName && fieldName.getValue(),
                 default_dummy: fieldDefault && fieldDefault.getValue(),
                 morph_targets: []
             },
             ok = true;
 
-        if (!params.base) {
+        if (base && base.firstChild && base.firstChild.get('assetId')) {
+            params.base.id = base.firstChild.get('assetId');
+            params.base.origin_name = base.firstChild.get('name');
+        } else {
             cb('base is empty!');
             return;
         }
@@ -51,7 +127,8 @@ Ext.define('Admin.view.geometry.EditController', {
                 var weight = +child.get('weight');
                 section.sources.push({
                     id: child.get('assetId'),
-                    weight: weight
+                    weight: weight,
+                    origin_name: child.get('name')
                 });
 
                 if (!weight) ok = false;
@@ -85,6 +162,10 @@ Ext.define('Admin.view.geometry.EditController', {
         });
     },
 
+    updateGeometry: function (cb) {
+
+    },
+
     onFilesAdded: function (up, files) {
         var fieldName = this.lookupReference('fieldName'),
             tree = this.lookupReference('treepanel'),
@@ -94,10 +175,10 @@ Ext.define('Admin.view.geometry.EditController', {
             targets = root.findChild('name', 'targets'),
             sections = {
                 height: targets.findChild('name', 'height'),
-                chest: targets.findChild('name', 'chest'),
                 underbust: targets.findChild('name', 'underbust'),
                 underchest: targets.findChild('name', 'underbust'),
                 waist: targets.findChild('name', 'waist'),
+                chest: targets.findChild('name', 'chest'),
                 hips: targets.findChild('name', 'hips')
             },
             unknown = root.findChild('name', 'unknown');
@@ -150,7 +231,7 @@ Ext.define('Admin.view.geometry.EditController', {
             } else if (isDiffuseMap(file)) {
                 node.type = 'diffuse';
                 textures.appendChild(node);
-            }  else if (isSpecularMap(file)) {
+            } else if (isSpecularMap(file)) {
                 node.type = 'specular';
                 textures.appendChild(node);
             } else if (isModel(file)) {
@@ -160,8 +241,15 @@ Ext.define('Admin.view.geometry.EditController', {
                         var sectionNode = sections[section];
                         if (isSection(section, file)) {
                             sectionFind = true;
-                            node.type = section;
-                            sectionNode.appendChild(node);
+
+                            sectionNode.appendChild({
+                                name: node.name,
+                                size: node.size,
+                                type: section,
+                                leaf: true
+                            });
+
+                            break;
                         }
                     }
                 }
@@ -175,6 +263,8 @@ Ext.define('Admin.view.geometry.EditController', {
                 unknown.appendChild(node);
             }
         });
+
+        console.log('sections chest:', sections.chest);
 
         tree.expandAll();
     },
@@ -291,7 +381,7 @@ Ext.define('Admin.view.geometry.EditController', {
                 Admin.app.getGeometryStore().reload();
                 me.closeView();
             })
-        }else {
+        } else {
             me.uploader.start()
         }
     },
@@ -302,7 +392,7 @@ Ext.define('Admin.view.geometry.EditController', {
         me.createGeometry(function (error, geometryId) {
             if (error) {
                 me.showError(error);
-            }else {
+            } else {
                 Ext.Msg.alert('GeometryId', geometryId);
             }
         })

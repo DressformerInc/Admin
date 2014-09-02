@@ -164,10 +164,10 @@ Ext.define('Admin.view.garment.EditController', {
             targets = root.findChild('name', 'targets'),
             sections = {
                 height: targets.findChild('name', 'height'),
-                chest: targets.findChild('name', 'chest'),
                 underbust: targets.findChild('name', 'underbust'),
-                underbust: targets.findChild('name', 'underbust'),
+                underchest: targets.findChild('name', 'underbust'),
                 waist: targets.findChild('name', 'waist'),
+                chest: targets.findChild('name', 'chest'),
                 hips: targets.findChild('name', 'hips')
             },
             unknown = root.findChild('name', 'unknown');
@@ -233,6 +233,8 @@ Ext.define('Admin.view.garment.EditController', {
                             node.type = section;
                             sectionNode.appendChild(node);
                         }
+
+                        break;
                     }
                 }
 

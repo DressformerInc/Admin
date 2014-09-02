@@ -14,7 +14,8 @@ Ext.define('Admin.view.geometry.SearchController', {
         var win = new Admin.view.geometry.Edit({
             viewModel: {
                 data: {
-                    title: 'Add geometry'
+                    title: 'Add geometry',
+                    theGeometry: null
                 }
             }
         });
@@ -22,13 +23,13 @@ Ext.define('Admin.view.geometry.SearchController', {
         win.show();
     },
 
-    onEdit: function () {
+    onEdit: function (self, rec) {
         console.log('row edit', arguments);
         var win = new Admin.view.geometry.Edit({
             viewModel: {
                 data: {
                     title: 'Edit geometry',
-                    theGarment: {}
+                    theGeometry: rec
                 }
             }
         });
