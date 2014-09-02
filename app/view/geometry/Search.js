@@ -21,6 +21,7 @@ Ext.define('Admin.view.geometry.Search', {
     },
 
     tbar: [
+        {xtype: 'button', text: 'Add', handler:'onAdd'}
     ],
 
     columnLines: true,

@@ -37,10 +37,9 @@ Ext.define('Admin.view.geometry.Edit', {
     modal: true,
 
     tbar: [
-        {xtype: 'button', text: 'Browse', reference:'buttonBrowse', handler: 'onBrowse'},
-        {xtype: 'button', text: 'Upload', reference:'buttonUpload', handler: 'onUpload'},
-        {xtype: 'textfield', emptyText: 'Garment name', reference:'fieldName'},
-        {xtype: 'button', text: 'Create geometry', reference:'buttonCreateGeometry', handler: 'onCreateGeometry'}
+        {xtype: 'button', text: 'Select files', reference:'buttonBrowse', handler: 'onBrowse'},
+        {xtype: 'textfield', emptyText: 'Geometry name', reference:'fieldName'},
+        {xtype: 'checkboxfield', boxLabel:'default dummy', reference:'fieldDefault'}
     ],
 
     items: [{
@@ -71,8 +70,6 @@ Ext.define('Admin.view.geometry.Edit', {
             }
         },
         selType: 'cellmodel',
-//        selType: 'treemodel',
-//        selType: 'rowmodel',
         plugins: {
             ptype: 'cellediting',
             clicksToEdit: 1
@@ -165,12 +162,7 @@ Ext.define('Admin.view.geometry.Edit', {
         }
     }],
 
-    buttons: [{
-        text: 'Close',
-        listeners: {
-            click: 'onClose'
-        }
-    }, '->', {
+    buttons: ['->', {
         text: 'Create',
         listeners: {
             click: 'onCreate'

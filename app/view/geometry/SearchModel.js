@@ -6,14 +6,12 @@ Ext.define('Admin.view.geometry.SearchModel', {
     alias: 'viewmodel.geometrysearch',
 
     requires: [
-        'Admin.model.*',
-        'Admin.store.Garments'
+        'Admin.model.Geometry',
+        'Admin.store.Geometry'
     ],
 
     
     stores: {
-        geometry: {
-            type: 'geometry'
-        }
+        geometry: 'Geometry'
     }
 });

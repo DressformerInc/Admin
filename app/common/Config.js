@@ -6,11 +6,11 @@ Ext.define('Admin.common.Config', {
     singleton: true,
     constructor: function () {
 //        var url = 'http://webgl.dressformer.com/';
-        var url = 'http://85.25.198.89/';
+        var url = 'http://v2.dressformer.com/';
         this.api = {
             base: url,
             garments: url+'api/garments/',
-            geometry: url+'api/geometry/',
+            geometry: url+'assets/geometry/',
             user: url+'api/user/',
             assets: url+'assets/'
         };

@@ -9,6 +9,8 @@ Ext.define('Admin.view.geometry.EditController', {
         'Ext.window.Toast'
     ],
 
+    isUploaded: false,
+
     showError: function (msg) {
         Ext.Msg.show({
             title: 'Error',
@@ -21,11 +23,15 @@ Ext.define('Admin.view.geometry.EditController', {
     createGeometry: function (cb) {
         var me = this,
             tree = this.lookupReference('treepanel'),
+            fieldName = this.lookupReference('fieldName'),
+            fieldDefault = this.lookupReference('fieldDefault'),
             root = tree.getRootNode(),
             base = root.findChild('name', 'base'),
             targets = root.findChild('name', 'targets'),
             params = {
                 base: base && base.firstChild && base.firstChild.get('assetId'),
+                name: fieldName && fieldName.getValue(),
+                default_dummy: fieldDefault && fieldDefault.getValue(),
                 morph_targets: []
             },
             ok = true;
@@ -62,7 +68,7 @@ Ext.define('Admin.view.geometry.EditController', {
         }
 
         Ext.Ajax.request({
-            url: 'http://webgl.dressformer.com/assets/geometry',
+            url: Admin.common.Config.api.geometry,
             jsonData: params,
             success: function (response) {
                 try {
@@ -197,8 +203,19 @@ Ext.define('Admin.view.geometry.EditController', {
     },
 
     onUploadComplete: function (up, files) {
-        Ext.Msg.hide();
-        console.log('[UploadComplete]');
+        var me = this;
+
+        me.createGeometry(function (error, geometryId) {
+            Ext.Msg.hide();
+            if (error) {
+                me.showError('Ooops!\nCreate geometry fail...');
+                console.log('error:', error);
+                return;
+            }
+
+            Admin.app.getGeometryStore().reload();
+            me.closeView();
+        });
     },
 
     onViewRendered: function () {
@@ -209,13 +226,14 @@ Ext.define('Admin.view.geometry.EditController', {
             runtimes: 'html5',
             browse_button: buttonBrowse.getEl().dom.id, // you can pass in id...
             container: me.getView().getEl().dom.id, // ... or DOM Element itself
-            url: 'http://webgl.dressformer.com/assets/',
+//            url: 'http://webgl.dressformer.com/assets/',
+            url: Admin.common.Config.api.assets,
 
             filters: {
                 max_file_size: '50mb',
                 mime_types: [
                     {title: "Image files", extensions: "jpg,gif,png"},
-                    {title: "Obj files", extensions: "obj"}
+                    {title: "Obj/mtl files", extensions: "obj,mtl"}
                 ]
             },
 
@@ -242,7 +260,7 @@ Ext.define('Admin.view.geometry.EditController', {
     },
 
     onBrowse: function () {
-        console.log('onBrowse', arguments);
+//        console.log('onBrowse', arguments);
     },
 
     onUpload: function () {
@@ -258,27 +276,24 @@ Ext.define('Admin.view.geometry.EditController', {
 
     onCreate: function () {
         var me = this;
-        Ext.Msg.wait('Wait...', 'Creating garment...');
-        me.createGeometry(function (error, geometryId) {
-            if (error) {
-                Ext.Msg.hide();
-                me.showError('Ooops!\nCreate geometry fail...');
-                console.log('error:', error);
-                return;
-            }
-
-            me.createGarment(geometryId, function (error, garmentId) {
-                console.log('create garment callback:', arguments);
-                Ext.Msg.hide();
+        Ext.Msg.wait('Wait...', 'Creating geometry...');
+        if (me.isUploaded) {
+            me.createGeometry(function (error, geometryId) {
                 if (error) {
-                    me.showError('Ooops!\nCreate garment fail...');
+                    Ext.Msg.hide();
+                    me.showError('Ooops!\nCreate geometry fail...');
                     console.log('error:', error);
                     return;
                 }
-                Ext.Msg.alert('Status', 'Garment created successfully.');
-            });
 
-        });
+                console.log('geometry id:', geometryId);
+
+                Admin.app.getGeometryStore().reload();
+                me.closeView();
+            })
+        }else {
+            me.uploader.start()
+        }
     },
 
     onCreateGeometry: function () {

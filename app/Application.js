@@ -18,6 +18,9 @@ Ext.define('Admin.Application', {
     ],
     
     launch: function () {
-        // TODO - Launch the application
+        Ext.Ajax.setDefaultHeaders({
+            'Accept' : 'application/json',
+            'Content-Type' : 'application/json'
+        });
     }
 });

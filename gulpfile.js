@@ -6,7 +6,7 @@ var gulp = require('gulp'),
 //    exec = require('gulp-exec');
 
 gulp.task('rsync', ['build'], function (cb) {
-    exec('rsync -crv --delete ./build/production/Admin v2.dressformer.com:/opt/www/admin-test', function (err, stdout, stderr) {
+    exec('rsync -crv --delete ./build/production/Admin/ v2.dressformer.com:/opt/www/admin-test', function (err, stdout, stderr) {
         stdout && console.log('output:',stdout);
         stderr && console.log('error:', stderr);
         cb(err);

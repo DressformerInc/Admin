@@ -6,14 +6,21 @@ Ext.define('Admin.store.Geometry', {
     alias: 'store.geometry',
     model: 'Admin.model.Geometry',
     autoLoad: true,
-    data: [
-        {id: '1', name: 'name1'},
-        {id: '2', name: 'name2'},
-        {id: '3', name: 'name3'},
-        {id: '4', name: 'name4'}
-    ],
+//    data: [
+//        {id: '1', name: 'name1'},
+//        {id: '2', name: 'name2'},
+//        {id: '3', name: 'name3'},
+//        {id: '4', name: 'name4'}
+//    ],
+//    proxy: {
+//        type: 'memory',
+//        reader: {
+//            type: 'json'
+//        }
+//    }
     proxy: {
-        type: 'memory',
+        type: 'ajax',
+        url: Admin.common.Config.api.geometry,
         reader: {
             type: 'json'
         }

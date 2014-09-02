@@ -113,7 +113,7 @@ Ext.define('Admin.view.garment.EditController', {
         }
 
         Ext.Ajax.request({
-            url: Admin.common.Config.api.assets+'geometry/',
+            url: Admin.common.Config.api.geometry,
             jsonData: params,
             success: function (response) {
                 try {
@@ -286,7 +286,7 @@ Ext.define('Admin.view.garment.EditController', {
             runtimes: 'html5',
             browse_button: buttonBrowse.getEl().dom.id, // you can pass in id...
             container: me.getView().getEl().dom.id, // ... or DOM Element itself
-            url: 'http://webgl.dressformer.com/assets/',
+            url: Admin.common.Config.api.assets,
 
             filters: {
                 max_file_size: '50mb',
