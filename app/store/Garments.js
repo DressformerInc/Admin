@@ -7,6 +7,7 @@ Ext.define('Admin.store.Garments', {
     storeId: 'storeGarments',
     model: 'Admin.model.Garment',
     autoLoad: true,
+    groupField: 'gid',
     proxy: {
         type: 'ajax',
         url: Admin.common.Config.api.garments,

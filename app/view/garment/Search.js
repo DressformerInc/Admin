@@ -48,6 +48,15 @@ Ext.define('Admin.view.garment.Search', {
 
     columnLines: true,
 
+    features: [{
+        id: 'group',
+        ftype: 'groupingsummary',
+//        groupHeaderTpl: '{name}',
+        groupHeaderTpl: new Ext.XTemplate('<tpl for=".">', '<input type="button" value={name}></div>', '</tpl>'),
+//        hideGroupedHeader: true,
+        enableGroupingMenu: false
+    }],
+
     columns: [
         {
             text: 'ID',
@@ -62,6 +71,13 @@ Ext.define('Admin.view.garment.Search', {
     ],
     listeners: {
         rowdblclick: 'onEditGarment',
-        afterrender: 'onViewRendered'
+        afterrender: 'onViewRendered',
+        groupclick: function(view, node, group, e, eOpts) {
+            console.log('Clicked on ', group);
+            if (e.getTarget().type === 'button'){
+                alert('Clicked on '+ group);
+            }
+        }
+
     }
 });
