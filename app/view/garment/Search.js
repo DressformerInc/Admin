@@ -19,49 +19,61 @@ Ext.define('Admin.view.garment.Search', {
 //        'Garment.override.grid.column.Date'
         'Ext.data.*',
         'Ext.util.*',
-        'Ext.state.*',
-        'Ext.ux.upload.Button',
-        'Ext.ux.upload.plugin.Window'
-
+        'Ext.state.*'
     ],
 
-    // Connects to our View Controller (Garment.view.garment.SearchController) and View Model
-    // (Garment.view.garment.SearchModel).
     controller: 'garmentsearch',
     viewModel: {
         type: 'garmentsearch'
     },
 
-//    store: Admin.app.getGarmentsStore(),
+    store: 'Garments',
 
-    bind: {
-//        title: 'Search - {theProject.name}',
-        store: '{garments}'
-    },
-
-//    store: Ext.data.StoreManager.lookup('garmentStore'),
+//    bind: {
+////        title: 'Search - {theProject.name}',
+//        store: '{garments}'
+//    },
 
     tbar: [
-        {text: 'Add', handler: 'onAddGarment', reference: 'buttonAddGarment' },
-        {text: 'Reload', handler: 'onReload', reference: 'buttonReload' }
+        {text: 'Add', handler: 'onAddGarment', reference: 'buttonAddGarment' }
+//        {text: 'Reload', handler: 'onReload', reference: 'buttonReload' }
+    ],
+
+    dockedItems: [
+        {
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            store: 'Garments'
+        }
     ],
 
     columnLines: true,
 
-    features: [{
-        id: 'group',
-        ftype: 'groupingsummary',
-//        groupHeaderTpl: '{name}',
-        groupHeaderTpl: new Ext.XTemplate('<tpl for=".">', '<input type="button" value={name}></div>', '</tpl>'),
-//        hideGroupedHeader: true,
-        enableGroupingMenu: false
-    }],
+    features: [
+        {
+            ftype: 'groupingsummary',
+            showSummaryRow: false,
+//            collapsible: false,
+//            hideGroupedHeader: true,
+//            enableGroupingMenu: true,
+            groupHeaderTpl: new Ext.XTemplate('<tpl for=".">', '<div>Garment: {name} <input type="button" value="Add size"></div>', '</tpl>')
+        }
+    ],
 
     columns: [
         {
             text: 'ID',
             hidden: true,
             dataIndex: 'id'
+        },
+        {
+            text: 'Gid',
+            hidden: true,
+            dataIndex: 'gid'
+        },
+        {
+            text: 'Size',
+            dataIndex: 'size_name'
         },
         {
             text: 'Title',
@@ -72,12 +84,18 @@ Ext.define('Admin.view.garment.Search', {
     listeners: {
         rowdblclick: 'onEditGarment',
         afterrender: 'onViewRendered',
-        groupclick: function(view, node, group, e, eOpts) {
-            console.log('Clicked on ', group);
-            if (e.getTarget().type === 'button'){
-                alert('Clicked on '+ group);
-            }
-        }
+        groupclick: 'onGroupClick'
+//        groupclick: function (view, node, group, e, eOpts) {
+//            e.stopEvent();
+//            e.stopPropagation();
+//            console.log('Clicked on ', group);
+//            if (e.getTarget().type === 'button') {
+//                console.log('event:', e);
+////                view.fireEvent('onAddSize', [view, node]);
+////                view.fireViewEvent('onAddSize', view, node);
+//                return false;
+//            }
+//        }
 
     }
 });

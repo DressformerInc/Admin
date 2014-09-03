@@ -36,6 +36,29 @@ Ext.define('Admin.view.garment.SearchController', {
         win.show();
     },
 
+    onAddSize: function (view, node) {
+        console.log('onAddSize:', node);
+    },
+
+    onGroupClick: function (view, node, group, e, eOpts) {
+//        console.log('Clicked on ', group, 'target:', e.getTarget());
+        if (e.getTarget().type === 'button') {
+
+            view.features[0].expand(group);
+
+            var win = new Admin.view.garment.Edit({
+                viewModel: {
+                    data: {
+                        title: 'Add size: '+group,
+                        gid: group
+                    }
+                }
+            });
+
+            win.show();
+        }
+    },
+
     onReload: function () {
         var store = Ext.getStore('Garments');
         store.reload();

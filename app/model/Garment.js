@@ -6,6 +6,7 @@ Ext.define('Admin.model.Garment', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id',  type: 'string'},
+        {name: 'gid',  type: 'string'},
         {name: 'name',  type: 'string'}
     ]
 });

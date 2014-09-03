@@ -3,8 +3,10 @@
  */
 Ext.define('Admin.store.Garments', {
     extend: 'Ext.data.Store',
+
     alias: 'store.garments',
     storeId: 'storeGarments',
+
     model: 'Admin.model.Garment',
     autoLoad: true,
     groupField: 'gid',

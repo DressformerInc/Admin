@@ -10,6 +10,7 @@ Ext.define('Admin.view.geometry.EditController', {
     ],
 
     isUploaded: false,
+    sendMode: 'POST',
 
     initGeometry: function (geometry) {
         var tree = this.lookupReference('treepanel'),
@@ -93,7 +94,7 @@ Ext.define('Admin.view.geometry.EditController', {
         });
     },
 
-    createGeometry: function (cb) {
+    sendGeometry: function (method, cb) {
         var me = this,
             tree = this.lookupReference('treepanel'),
             fieldName = this.lookupReference('fieldName'),
@@ -146,11 +147,11 @@ Ext.define('Admin.view.geometry.EditController', {
 
         Ext.Ajax.request({
             url: Admin.common.Config.api.geometry,
+            method: method,
             jsonData: params,
             success: function (response) {
                 try {
                     var json = Ext.JSON.decode(response.responseText);
-                    console.log('response json:', json);
                     cb(null, json.id);
                 } catch (e) {
                     cb(e);
@@ -162,8 +163,12 @@ Ext.define('Admin.view.geometry.EditController', {
         });
     },
 
-    updateGeometry: function (cb) {
+    createGeometry: function (cb) {
+        this.sendGeometry('POST', cb);
+    },
 
+    updateGeometry: function (cb) {
+        this.sendGeometry('PUT', cb);
     },
 
     onFilesAdded: function (up, files) {
@@ -295,7 +300,7 @@ Ext.define('Admin.view.geometry.EditController', {
     onUploadComplete: function (up, files) {
         var me = this;
 
-        me.createGeometry(function (error, geometryId) {
+        me.sendGeometry(me.sendMode, function (error, geometryId) {
             Ext.Msg.hide();
             if (error) {
                 me.showError('Ooops!\nCreate geometry fail...');
@@ -367,6 +372,9 @@ Ext.define('Admin.view.geometry.EditController', {
     onCreate: function () {
         var me = this;
         Ext.Msg.wait('Wait...', 'Creating geometry...');
+
+        this.sendMode = 'POST';
+
         if (me.isUploaded) {
             me.createGeometry(function (error, geometryId) {
                 if (error) {
@@ -386,16 +394,28 @@ Ext.define('Admin.view.geometry.EditController', {
         }
     },
 
-    onCreateGeometry: function () {
+    onUpdate: function () {
         var me = this;
+        Ext.Msg.wait('Wait...', 'Updating geometry...');
 
-        me.createGeometry(function (error, geometryId) {
-            if (error) {
-                me.showError(error);
-            } else {
-                Ext.Msg.alert('GeometryId', geometryId);
-            }
-        })
+        this.sendMode = 'PUT';
 
+        if (me.isUploaded) {
+            me.createGeometry(function (error, geometryId) {
+                if (error) {
+                    Ext.Msg.hide();
+                    me.showError('Ooops!\nUpdate geometry fail...');
+                    console.log('error:', error);
+                    return;
+                }
+
+                console.log('geometry id:', geometryId);
+
+                Admin.app.getGeometryStore().reload();
+                me.closeView();
+            })
+        } else {
+            me.uploader.start()
+        }
     }
 });

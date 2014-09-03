@@ -21,7 +21,8 @@ Ext.define('Admin.view.garment.EditController', {
     },
 
     createGarment: function (geometryId, cb) {
-        var assets = Admin.common.Config.api.assets,
+        var data = this.getViewModel().data,
+            assets = Admin.common.Config.api.assets,
             fieldName = this.lookupReference('fieldName'),
             fieldSize = this.lookupReference('fieldSize'),
             tree = this.lookupReference('treepanel'),
@@ -36,6 +37,7 @@ Ext.define('Admin.view.garment.EditController', {
             specularId = specular && specular.get('assetId'),
             params = {
                 name: fieldName.getValue(),
+                gid: data.gid,
                 size_name: fieldSize.getValue(),
                 assets: {}
             };
@@ -69,19 +71,27 @@ Ext.define('Admin.view.garment.EditController', {
         });
     },
 
-    createGeometry: function (cb) {
+    //TODO: вынести в common
+    sendGeometry: function (method, cb) {
         var me = this,
             tree = this.lookupReference('treepanel'),
+            fieldName = this.lookupReference('fieldName'),
+            fieldDefault = this.lookupReference('fieldDefault'),
             root = tree.getRootNode(),
             base = root.findChild('name', 'base'),
             targets = root.findChild('name', 'targets'),
             params = {
-                base: base && base.firstChild && base.firstChild.get('assetId'),
+                base: {},
+                name: fieldName && fieldName.getValue(),
+                default_dummy: fieldDefault && fieldDefault.getValue(),
                 morph_targets: []
             },
             ok = true;
 
-        if (!params.base) {
+        if (base && base.firstChild && base.firstChild.get('assetId')) {
+            params.base.id = base.firstChild.get('assetId');
+            params.base.origin_name = base.firstChild.get('name');
+        } else {
             cb('base is empty!');
             return;
         }
@@ -96,7 +106,8 @@ Ext.define('Admin.view.garment.EditController', {
                 var weight = +child.get('weight');
                 section.sources.push({
                     id: child.get('assetId'),
-                    weight: weight
+                    weight: weight,
+                    origin_name: child.get('name')
                 });
 
                 if (!weight) ok = false;
@@ -114,11 +125,11 @@ Ext.define('Admin.view.garment.EditController', {
 
         Ext.Ajax.request({
             url: Admin.common.Config.api.geometry,
+            method: method,
             jsonData: params,
             success: function (response) {
                 try {
                     var json = Ext.JSON.decode(response.responseText);
-                    console.log('response json:', json);
                     cb(null, json.id);
                 } catch (e) {
                     cb(e);
@@ -128,6 +139,10 @@ Ext.define('Admin.view.garment.EditController', {
                 cb(response);
             }
         });
+    },
+
+    createGeometry: function (cb) {
+        this.sendGeometry('POST', cb);
     },
 
     createGeometryAndGarment: function () {

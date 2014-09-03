@@ -24,6 +24,14 @@ Ext.define('Admin.view.geometry.Search', {
         {xtype: 'button', text: 'Add', handler:'onAdd'}
     ],
 
+    dockedItems: [
+        {
+            xtype: 'pagingtoolbar',
+            dock: 'bottom',
+            store: 'Geometry'
+        }
+    ],
+
     columnLines: true,
 
     columns: [
