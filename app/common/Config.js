@@ -10,6 +10,7 @@ Ext.define('Admin.common.Config', {
         this.api = {
             base: url,
             garments: url+'api/garments/',
+            dummies: url+'api/dummies/',
             geometry: url+'assets/geometry/',
             user: url+'api/user/',
             assets: url+'assets/'
