@@ -11,11 +11,11 @@ Ext.define('Admin.view.dummy.SearchController', {
     },
 
     onAdd: function (btn) {
-        var win = new Admin.view.geometry.Edit({
+        var win = new Admin.view.dummy.Edit({
             viewModel: {
                 data: {
                     title: 'Add dummy',
-                    theGeometry: null
+                    theDummy: null
                 }
             }
         });
@@ -28,7 +28,7 @@ Ext.define('Admin.view.dummy.SearchController', {
             viewModel: {
                 data: {
                     title: 'Edit dummy',
-                    theGeometry: rec
+                    theDummy: rec
                 }
             }
         });
