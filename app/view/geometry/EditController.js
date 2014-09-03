@@ -171,6 +171,19 @@ Ext.define('Admin.view.geometry.EditController', {
         this.sendGeometry('PUT', cb);
     },
 
+    deleteGeometry: function (id, cb) {
+        Ext.Ajax.request({
+            url: Admin.common.Config.api.geometry+id,
+            method: 'DELETE',
+            success: function (response) {
+               cb(null, response);
+            },
+            failure: function (response) {
+                cb(response);
+            }
+        });
+    },
+
     onFilesAdded: function (up, files) {
         var fieldName = this.lookupReference('fieldName'),
             tree = this.lookupReference('treepanel'),
@@ -417,5 +430,21 @@ Ext.define('Admin.view.geometry.EditController', {
         } else {
             me.uploader.start()
         }
+    },
+
+    onDelete: function () {
+        var me = this,
+            data = this.getViewModel().data;
+
+        this.deleteGeometry(data.theGeometry.id, function (error, response) {
+            if (error){
+                console.log('error:', error);
+            } else {
+//                console.log('response:', response);
+                Admin.app.getGeometryStore().reload();
+                me.closeView();
+            }
+        });
     }
+
 });
