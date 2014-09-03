@@ -20,6 +20,76 @@ Ext.define('Admin.view.garment.EditController', {
         });
     },
 
+    initGarment: function (garment) {
+        //TODO: загрузить geometry
+        var tree = this.lookupReference('treepanel'),
+            fieldName = this.lookupReference('fieldName'),
+            fieldDefault = this.lookupReference('fieldDefault'),
+            root = tree.getRootNode(),
+            base = root.findChild('name', 'base'),
+            targets = root.findChild('name', 'targets'),
+            sections = {
+                height: targets.findChild('name', 'height'),
+                chest: targets.findChild('name', 'chest'),
+                underbust: targets.findChild('name', 'underbust'),
+                underchest: targets.findChild('name', 'underbust'),
+                waist: targets.findChild('name', 'waist'),
+                hips: targets.findChild('name', 'hips')
+            },
+            baseData = geometry.get('base'),
+            targetsData = geometry.get('morph_targets');
+
+        if (baseData) {
+            base.appendChild({
+                assetId: baseData.id,
+                name: baseData.origin_name,
+                type: 'base',
+                leaf: true
+            });
+        }
+
+        if (targetsData && targetsData.length > 0){
+            for (var i= 0, li=targetsData.length; i<li; ++i){
+                var target = targetsData[i],
+                    type = target.section;
+
+                for(var j= 0, lj=target.sources.length; j<lj; ++j){
+                    var source = target.sources[j];
+
+                    sections[type].appendChild({
+                        name: source.origin_name,
+                        assetId: source.id,
+                        weight: source.weight,
+                        type: type,
+                        leaf: true
+                    });
+                }
+            }
+        }
+
+
+        tree.expandAll();
+    },
+
+    init: function (view) {
+        var data = this.getViewModel().data,
+            btnCreate = this.lookupReference('buttonCreate'),
+            btnDelete = this.lookupReference('buttonDelete'),
+            btnUpdate = this.lookupReference('buttonUpdate');
+
+        if (data.theGarment) {
+//            this.initGarment(data.theGarment);
+            btnCreate.hide();
+            btnDelete.show();
+            btnUpdate.show();
+        } else {
+            btnCreate.show();
+            btnUpdate.hide();
+            btnDelete.hide();
+        }
+
+    },
+
     createGarment: function (geometryId, cb) {
         var data = this.getViewModel().data,
             assets = Admin.common.Config.api.assets,

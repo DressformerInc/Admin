@@ -14,7 +14,8 @@ Ext.define('Admin.view.garment.SearchController', {
         var win = new Admin.view.garment.Edit({
             viewModel: {
                 data: {
-                    title: 'Add garment'
+                    title: 'Add garment',
+                    theGarment: {}
                 }
             }
         });
@@ -22,13 +23,12 @@ Ext.define('Admin.view.garment.SearchController', {
         win.show();
     },
 
-    onEditGarment: function () {
-        console.log('row edit', arguments);
+    onEditGarment: function (self, rec) {
         var win = new Admin.view.garment.Edit({
             viewModel: {
                 data: {
                     title: 'Edit garment',
-                    theGarment: {}
+                    theGarment: rec
                 }
             }
         });

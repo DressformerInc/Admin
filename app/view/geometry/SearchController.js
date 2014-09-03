@@ -24,7 +24,6 @@ Ext.define('Admin.view.geometry.SearchController', {
     },
 
     onEdit: function (self, rec) {
-        console.log('row edit', arguments);
         var win = new Admin.view.geometry.Edit({
             viewModel: {
                 data: {
