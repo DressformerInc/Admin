@@ -49,6 +49,7 @@ Ext.define('Admin.view.geometry.EditController', {
 
                     sections[type].appendChild({
                         name: source.origin_name,
+                        id: source.id,
                         assetId: source.id,
                         weight: source.weight,
                         type: type,
@@ -96,6 +97,8 @@ Ext.define('Admin.view.geometry.EditController', {
 
     sendGeometry: function (method, cb) {
         var me = this,
+            data = this.getViewModel().data,
+            url = Admin.common.Config.api.geometry,
             tree = this.lookupReference('treepanel'),
             fieldName = this.lookupReference('fieldName'),
             fieldDefault = this.lookupReference('fieldDefault'),
@@ -145,8 +148,12 @@ Ext.define('Admin.view.geometry.EditController', {
             return;
         }
 
+        if ('PUT' === method) {
+            url += data.theGeometry.id;
+        }
+
         Ext.Ajax.request({
-            url: Admin.common.Config.api.geometry,
+            url: url,
             method: method,
             jsonData: params,
             success: function (response) {
