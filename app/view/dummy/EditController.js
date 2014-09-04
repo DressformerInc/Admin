@@ -53,7 +53,7 @@ Ext.define('Admin.view.dummy.EditController', {
     createGeometryAndDummy: function (cb) {
         var me = this,
             uploadTree = this.lookupReference('uploadtree'),
-            geometryParams = uploadTree.getData(),
+            geometryParams = uploadTree.getGeometryData(),
             fieldName = this.lookupReference('fieldName'),
             fieldChest = this.lookupReference('fieldChest'),
             fieldHeight = this.lookupReference('fieldHeight'),

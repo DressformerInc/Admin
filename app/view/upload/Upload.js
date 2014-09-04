@@ -131,8 +131,42 @@ Ext.define('Admin.view.upload.Upload', {
         afterrender: 'onViewRendered'
     },
 
+    getTexturesData: function () {
+        var root = this.getRootNode(),
+            textures = root.findChild('name', 'textures'),
+            params = {};
 
-    getData: function () {
+        /*
+         "diffuse"  : {
+         "url"       : "//v2.dressformer.com/image/53b54559fcb05d3238000002",
+         "id"        : "53b54559fcb05d3238000002",
+         "orig_name" : "KPL_123_diffuse.jpg"
+         },
+
+         "normal"   : {
+         "url"       : "//v2.dressformer.com/image/53b61050eff01c1008000001",
+         "id"        : "53b61050eff01c1008000001",
+         "orig_name" : "KPL_123_normal.jpg"
+         },
+
+         "specular" : {
+         "url"       : "//v2.dressformer.com/image/53b61050eff01c1008000003",
+         "id"        : "53b61050eff01c1008000003",
+         "orig_name  : "KPL_123_spec.jpg"
+         },
+         */
+
+        textures.eachChild(function (node) {
+            params[node.get('type')] = {
+                id: node.get('assetId'),
+                orig_name: node.get('name')
+            }
+        });
+
+        return params;
+    },
+
+    getGeometryData: function () {
         var root = this.getRootNode(),
             base = root.findChild('name', 'base'),
             targets = root.findChild('name', 'targets'),

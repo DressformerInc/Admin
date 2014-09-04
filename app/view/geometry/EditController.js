@@ -88,7 +88,7 @@ Ext.define('Admin.view.geometry.EditController', {
     createGeometry: function () {
         var me = this,
             uploadTree = this.lookupReference('uploadtree'),
-            geometryParams = uploadTree.getData(),
+            geometryParams = uploadTree.getGeometryData(),
             fieldName = this.lookupReference('fieldName');
 
         Ext.Msg.wait('Wait...', 'Creating geometry...');

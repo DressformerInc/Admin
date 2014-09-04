@@ -83,7 +83,8 @@ Ext.define('Admin.view.garment.EditController', {
         var me = this,
             vmData = this.getViewModel().data,
             uploadTree = this.lookupReference('uploadtree'),
-            geometryParams = uploadTree.getData(),
+            geometryParams = uploadTree.getGeometryData(),
+            texturesParams = uploadTree.getTexturesData(),
             fieldName = this.lookupReference('fieldName'),
             fieldSize = this.lookupReference('fieldSize'),
             garmentParams = {
@@ -99,6 +100,8 @@ Ext.define('Admin.view.garment.EditController', {
             };
 
         geometryParams.name = (garmentParams.name || 'unnamed') + ' garment geometry';
+
+        Ext.apply(garmentParams.assets, texturesParams);
 
         Ext.Msg.wait('Wait...', 'Creating garment...');
 
@@ -118,7 +121,6 @@ Ext.define('Admin.view.garment.EditController', {
                 });
             }
         });
-
     },
 
     onUploadedComplete: function (tree, files) {
