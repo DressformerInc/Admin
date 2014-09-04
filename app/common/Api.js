@@ -51,6 +51,19 @@ Ext.define('Admin.common.Api', {
         });
     },
 
+    deleteGeometry: function (id, cb) {
+        Ext.Ajax.request({
+            url: Admin.common.Config.api.geometry+id,
+            method: 'DELETE',
+            success: function (response) {
+                cb(null, response);
+            },
+            failure: function (response) {
+                cb(response);
+            }
+        });
+    },
+
     //********* Dummy CRUD **************
 
     /**

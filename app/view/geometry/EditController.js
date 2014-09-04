@@ -70,7 +70,7 @@ Ext.define('Admin.view.geometry.EditController', {
             btnUpdate = this.lookupReference('buttonUpdate');
 
         if (data.theGeometry) {
-            this.initGeometry(data.theGeometry);
+//            this.initGeometry(data.theGeometry);
             btnCreate.hide();
             btnDelete.show();
             btnUpdate.show();
@@ -333,122 +333,66 @@ Ext.define('Admin.view.geometry.EditController', {
         });
     },
 
-    onViewRendered: function () {
-        var me = this,
-            buttonBrowse = this.lookupReference('buttonBrowse');
-
-        me.uploader = new plupload.Uploader({
-            runtimes: 'html5',
-            browse_button: buttonBrowse.getEl().dom.id, // you can pass in id...
-            container: me.getView().getEl().dom.id, // ... or DOM Element itself
-//            url: 'http://webgl.dressformer.com/assets/',
-            url: Admin.common.Config.api.assets,
-
-            filters: {
-                max_file_size: '50mb',
-                mime_types: [
-                    {title: "Image files", extensions: "jpg,gif,png"},
-                    {title: "Obj/mtl files", extensions: "obj,mtl"}
-                ]
-            },
-
-            init: {
-                PostInit: function () {
-                    console.log('post init', null);
-                },
-
-                FilesAdded: me.onFilesAdded.bind(me),
-
-                FileUploaded: me.onFileUploaded.bind(me),
-
-                UploadComplete: me.onUploadComplete.bind(me),
-
-                UploadProgress: me.onUploadProgress.bind(me),
-
-                Error: function (up, err) {
-                    console.log('error:', err);
-                }
-            }
-        });
-
-        me.uploader.init();
-    },
-
-    onBrowse: function () {
-//        console.log('onBrowse', arguments);
-    },
-
-    onUpload: function () {
-        this.uploader.start();
-        Ext.Msg.wait('Uploading', 'Uploading garment...');
-        Ext.toast({
-            title: 'Upload',
-            html: 'Uploading started!!!',
-            align: 'tr',
-            bodyPadding: 10
-        });
-    },
 
     onCreate: function () {
-        var me = this;
-        Ext.Msg.wait('Wait...', 'Creating geometry...');
-
-        this.sendMode = 'POST';
-
-        if (me.isUploaded) {
-            me.createGeometry(function (error, geometryId) {
-                if (error) {
-                    Ext.Msg.hide();
-                    me.showError('Ooops!\nCreate geometry fail...');
-                    console.log('error:', error);
-                    return;
-                }
-
-                console.log('geometry id:', geometryId);
-
-                Admin.app.getGeometryStore().reload();
-                me.closeView();
-            })
-        } else {
-            me.uploader.start()
-        }
+//        var me = this;
+//        Ext.Msg.wait('Wait...', 'Creating geometry...');
+//
+//        this.sendMode = 'POST';
+//
+//        if (me.isUploaded) {
+//            me.createGeometry(function (error, geometryId) {
+//                if (error) {
+//                    Ext.Msg.hide();
+//                    me.showError('Ooops!\nCreate geometry fail...');
+//                    console.log('error:', error);
+//                    return;
+//                }
+//
+//                console.log('geometry id:', geometryId);
+//
+//                Admin.app.getGeometryStore().reload();
+//                me.closeView();
+//            })
+//        } else {
+//            me.uploader.start()
+//        }
     },
 
     onUpdate: function () {
-        var me = this;
-        Ext.Msg.wait('Wait...', 'Updating geometry...');
-
-        this.sendMode = 'PUT';
-
-        if (me.isUploaded) {
-            me.createGeometry(function (error, geometryId) {
-                if (error) {
-                    Ext.Msg.hide();
-                    me.showError('Ooops!\nUpdate geometry fail...');
-                    console.log('error:', error);
-                    return;
-                }
-
-                console.log('geometry id:', geometryId);
-
-                Admin.app.getGeometryStore().reload();
-                me.closeView();
-            })
-        } else {
-            me.uploader.start()
-        }
+//        var me = this;
+//        Ext.Msg.wait('Wait...', 'Updating geometry...');
+//
+//        this.sendMode = 'PUT';
+//
+//        if (me.isUploaded) {
+//            me.createGeometry(function (error, geometryId) {
+//                if (error) {
+//                    Ext.Msg.hide();
+//                    me.showError('Ooops!\nUpdate geometry fail...');
+//                    console.log('error:', error);
+//                    return;
+//                }
+//
+//                console.log('geometry id:', geometryId);
+//
+//                Admin.app.getGeometryStore().reload();
+//                me.closeView();
+//            })
+//        } else {
+//            me.uploader.start()
+//        }
     },
 
     onDelete: function () {
         var me = this,
             data = this.getViewModel().data;
 
-        this.deleteGeometry(data.theGeometry.id, function (error, response) {
-            if (error){
-                console.log('error:', error);
-            } else {
-//                console.log('response:', response);
-                Admin.app.getGeometryStore().reload();
+        Admin.common.Api.deleteGeometry(data.theGeometry.id, function (error, response) {
+            if (error) {
+                Admin.common.Utils.error(error, response);
+            }else {
+                Admin.app.getGeometryStore().load();
                 me.closeView();
             }
         });
