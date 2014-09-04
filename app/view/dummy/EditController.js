@@ -115,11 +115,9 @@ Ext.define('Admin.view.dummy.EditController', {
             fieldDefault = this.lookupReference('fieldDefault'),
             dummyParams = {
                 name: fieldName && fieldName.getValue(),
-                default: fieldDefault && fieldDefault.getValue(),
+                'default': fieldDefault && fieldDefault.getValue(),
                 assets: {
-                    geometry: {
-                        id: ''
-                    }
+                    geometry: {}
                 },
                 body: {
                     height: fieldHeight && +fieldHeight.getValue(),
