@@ -64,12 +64,14 @@ Ext.define('Admin.common.Api', {
             method: 'POST',
             jsonData: params,
             success: function (response) {
+                var json;
                 try {
-                    var json = Ext.JSON.decode(response.responseText);
-                    cb(null, json);
+                    json = Ext.JSON.decode(response.responseText);
                 } catch (e) {
-                    cb(e);
+                    return cb(e);
                 }
+
+                cb(null, json);
             },
             failure: function (response) {
                 cb(response);

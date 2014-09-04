@@ -98,7 +98,7 @@ Ext.define('Admin.view.dummy.EditController', {
     },
 
     onUploadedComplete: function (tree, files) {
-        this.createGeometryAndDummy(this.onCreatedComplete);
+        this.createGeometryAndDummy(this.onCreatedComplete.bind(this));
     },
 
     createGeometryAndDummy: function (cb) {
@@ -133,7 +133,7 @@ Ext.define('Admin.view.dummy.EditController', {
                 Admin.common.Utils.error('Failed to create the geometry!', error);
             } else {
                 dummyParams.assets.geometry.id = id;
-                Admin.common.Api.createDummy(dummyParams, me.onCreatedComplete);
+                Admin.common.Api.createDummy(dummyParams, me.onCreatedComplete.bind(me));
             }
         });
 
