@@ -6,6 +6,9 @@ Ext.define('Admin.view.upload.Upload', {
     alias: 'widget.upload',
 
     controller: 'upload',
+    viewModel: {
+        type: 'upload'
+    },
 
     tbar: [
         {xtype: 'button', text: 'Select files', reference: 'buttonSelectFiles'}
@@ -126,6 +129,49 @@ Ext.define('Admin.view.upload.Upload', {
 
     listeners: {
         afterrender: 'onViewRendered'
+    },
+
+
+    getData: function () {
+        var root = this.getRootNode(),
+            base = root.findChild('name', 'base'),
+            targets = root.findChild('name', 'targets'),
+            params = {
+                base: {},
+                name: '',
+                morph_targets: []
+            },
+            ok = true;
+
+        if (base && base.firstChild && base.firstChild.get('assetId')) {
+            params.base.id = base.firstChild.get('assetId');
+            params.base.origin_name = base.firstChild.get('name');
+        } else {
+            console.log('Error: base is empty');
+            return;
+        }
+
+        targets.eachChild(function (node) {
+            var section = {
+                section: node.get('name'),
+                sources: []
+            };
+
+            node.eachChild(function (child) {
+                var weight = +child.get('weight');
+                section.sources.push({
+                    id: child.get('assetId'),
+                    weight: weight,
+                    origin_name: child.get('name')
+                });
+
+                if (!weight) ok = false;
+            });
+
+            params.morph_targets.push(section);
+        });
+
+        return params;
     }
 
 });

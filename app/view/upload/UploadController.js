@@ -5,8 +5,13 @@ Ext.define('Admin.view.upload.UploadController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.upload',
 
-    uploader: null,
-    isUploaded: false,
+//    uploader: null,
+//    isUploaded: false,
+
+    bind: {
+        uploader: '{uploader}',
+        isUploaded: '{isUploaded}'
+    },
 
     onFilesAdded: function (up, files) {
         var fieldName = this.lookupReference('fieldName'),
@@ -112,7 +117,7 @@ Ext.define('Admin.view.upload.UploadController', {
 
     onFileUploaded: function (up, file, info) {
         var response = Ext.JSON.decode(info.response),
-            tree = this.lookupReference('treepanel'),
+            tree = this.getView(),
             root = tree.getRootNode(),
             node = root.findChild('name', file.name, true);
 
@@ -134,27 +139,17 @@ Ext.define('Admin.view.upload.UploadController', {
     },
 
     onUploadComplete: function (up, files) {
-        var me = this;
-
-        me.sendGeometry(me.sendMode, function (error, geometryId) {
-            Ext.Msg.hide();
-            if (error) {
-                me.showError('Ooops!\nCreate geometry fail...');
-                console.log('error:', error);
-                return;
-            }
-
-            Admin.app.getGeometryStore().reload();
-            me.closeView();
-        });
+        this.isUploaded = true;
+        this.fireViewEvent('uploadedcomplete', this, files);
     },
 
     onViewRendered: function () {
         var me = this,
+            vmData = this.getViewModel().data,
             buttonSelectFiles = this.lookupReference('buttonSelectFiles');
 
 
-        me.uploader = new plupload.Uploader({
+        vmData.uploader = me.uploader = new plupload.Uploader({
             runtimes: 'html5',
             browse_button: buttonSelectFiles.getEl().dom.id, // you can pass in id...
             container: me.getView().getEl().dom.id, // ... or DOM Element itself
