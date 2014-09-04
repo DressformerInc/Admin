@@ -1,9 +1,7 @@
 /**
  * Created by Miha-ha on 22.08.14.
  */
-/**
- * This class defines the User editing view.
- */
+
 Ext.define('Admin.view.dummy.Edit', {
     extend: 'Ext.window.Window',
 
@@ -19,13 +17,9 @@ Ext.define('Admin.view.dummy.Edit', {
     width: 800,
     minHeight: 400,
     height: 600,
-//    layout: {
-//        type: 'vbox',
-//        align: 'stretch'
-//    },
+
     layout: 'fit',
 
-    // As a Window the default property we are binding is "title":
     bind: {
         title: '{title}'
     },
@@ -102,9 +96,5 @@ Ext.define('Admin.view.dummy.Edit', {
         {text: 'Create', handler: 'onCreate', reference: 'buttonCreate'},
         {text: 'Update', handler: 'onUpdate', reference: 'buttonUpdate'}
 
-    ],
-
-    listeners: {
-//        afterrender: 'onViewRendered'
-    }
+    ]
 });

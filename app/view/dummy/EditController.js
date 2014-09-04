@@ -93,73 +93,14 @@ Ext.define('Admin.view.dummy.EditController', {
     },
 
     onCreate: function () {
-        var me = this,
-            uploadTree = this.lookupReference('uploadtree'),
-            vmData = uploadTree.getViewModel().data,
-            dataTree = uploadTree.getData(),
-            fieldName = this.lookupReference('fieldName'),
-            fieldChest = this.lookupReference('fieldChest'),
-            fieldHeight = this.lookupReference('fieldHeight'),
-            fieldUnderbust = this.lookupReference('fieldUnderbust'),
-            fieldWaist = this.lookupReference('fieldWaist'),
-            fieldHips = this.lookupReference('fieldHips'),
-            fieldDefault = this.lookupReference('fieldDefault');
-
-        console.log('vmData:', vmData);
+        var uploadTree = this.lookupReference('uploadtree'),
+            vmData = uploadTree.getViewModel().data;
 
         if (vmData.isUploaded) {
             this.createGeometryAndDummy();
         } else {
             vmData.uploader.start();
         }
-
-//        Ext.Msg.wait('Wait...', 'Creating geometry...');
-
-//        this.sendMode = 'POST';
-//
-//        if (me.isUploaded) {
-//            me.createGeometry(function (error, geometryId) {
-//                if (error) {
-//                    Ext.Msg.hide();
-//                    me.showError('Ooops!\nCreate geometry fail...');
-//                    console.log('error:', error);
-//                    return;
-//                }
-//
-//                console.log('geometry id:', geometryId);
-//
-//                Admin.app.getGeometryStore().reload();
-//                me.closeView();
-//            })
-//        } else {
-//            me.uploader.start()
-//        }
-        /*
-         {
-         "id": "0ae99696-0e13-4c54-8ad7-d1488dffbf65",
-
-         "name": "default dummy",
-
-         "default": true,
-
-         "assets": {
-         "geometry": {
-         "url" : "//v2.dressformer.com/geometry/e748f388-36f8-47a2-b012-61f1083b80e7",
-         "id"  : "e748f388-36f8-47a2-b012-61f1083b80e7"
-         }
-         },
-
-         "body": {
-         "chest"     : 91.154,
-         "underbust" : 77.13,
-         "waist"     : 66.71,
-         "hips"      : 88.88,
-         "height"    : 170
-         }
-         }
-         */
-
-
     },
 
     onUpdate: function () {
@@ -197,7 +138,7 @@ Ext.define('Admin.view.dummy.EditController', {
             Ext.Msg.hide();
             if (error) {
                 Admin.common.Utils.error(error, response);
-            }else {
+            } else {
                 Admin.app.getDummiesStore().load();
                 me.closeView();
             }
