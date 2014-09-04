@@ -12,65 +12,14 @@ Ext.define('Admin.view.dummy.EditController', {
     isUploaded: false,
     sendMode: 'POST',
 
-    initGeometry: function (geometry) {
-        var tree = this.lookupReference('treepanel'),
-            fieldName = this.lookupReference('fieldName'),
-            fieldDefault = this.lookupReference('fieldDefault'),
-            root = tree.getRootNode(),
-            base = root.findChild('name', 'base'),
-            targets = root.findChild('name', 'targets'),
-            sections = {
-                height: targets.findChild('name', 'height'),
-                chest: targets.findChild('name', 'chest'),
-                underbust: targets.findChild('name', 'underbust'),
-                underchest: targets.findChild('name', 'underbust'),
-                waist: targets.findChild('name', 'waist'),
-                hips: targets.findChild('name', 'hips')
-            },
-            baseData = geometry.get('base'),
-            targetsData = geometry.get('morph_targets');
-
-        if (baseData) {
-            base.appendChild({
-                assetId: baseData.id,
-                name: baseData.origin_name,
-                type: 'base',
-                leaf: true
-            });
-        }
-
-        if (targetsData && targetsData.length > 0) {
-            for (var i = 0, li = targetsData.length; i < li; ++i) {
-                var target = targetsData[i],
-                    type = target.section;
-
-                for (var j = 0, lj = target.sources.length; j < lj; ++j) {
-                    var source = target.sources[j];
-
-                    sections[type].appendChild({
-                        name: source.origin_name,
-                        id: source.id,
-                        assetId: source.id,
-                        weight: source.weight,
-                        type: type,
-                        leaf: true
-                    });
-                }
-            }
-        }
-
-
-        tree.expandAll();
-    },
-
     init: function (view) {
         var data = this.getViewModel().data,
             btnCreate = this.lookupReference('buttonCreate'),
             btnDelete = this.lookupReference('buttonDelete'),
             btnUpdate = this.lookupReference('buttonUpdate');
 
-        if (data.theGeometry) {
-            this.initGeometry(data.theGeometry);
+        if (data.theDummy) {
+//            this.initGeometry(data.theGeometry);
             btnCreate.hide();
             btnDelete.show();
             btnUpdate.show();
@@ -127,6 +76,10 @@ Ext.define('Admin.view.dummy.EditController', {
                     hips: fieldHips && +fieldHips.getValue()
                 }
             };
+
+        geometryParams.name = (dummyParams.name || 'unnamed') + ' dummy geometry';
+
+        Ext.Msg.wait('Wait...', 'Creating dummy...');
 
         Admin.common.Api.createGeometry(geometryParams, function (error, id) {
             if (error) {
@@ -210,43 +163,45 @@ Ext.define('Admin.view.dummy.EditController', {
     },
 
     onUpdate: function () {
-        var me = this;
-        Ext.Msg.wait('Wait...', 'Updating geometry...');
-
-        this.sendMode = 'PUT';
-
-        if (me.isUploaded) {
-            me.createGeometry(function (error, geometryId) {
-                if (error) {
-                    Ext.Msg.hide();
-                    me.showError('Ooops!\nUpdate geometry fail...');
-                    console.log('error:', error);
-                    return;
-                }
-
-                console.log('geometry id:', geometryId);
-
-                Admin.app.getGeometryStore().reload();
-                me.closeView();
-            })
-        } else {
-            me.uploader.start()
-        }
+//        var me = this;
+//        Ext.Msg.wait('Wait...', 'Updating geometry...');
+//
+//        this.sendMode = 'PUT';
+//
+//        if (me.isUploaded) {
+//            me.createGeometry(function (error, geometryId) {
+//                if (error) {
+//                    Ext.Msg.hide();
+//                    me.showError('Ooops!\nUpdate geometry fail...');
+//                    console.log('error:', error);
+//                    return;
+//                }
+//
+//                console.log('geometry id:', geometryId);
+//
+//                Admin.app.getGeometryStore().reload();
+//                me.closeView();
+//            })
+//        } else {
+//            me.uploader.start()
+//        }
     },
 
     onDelete: function () {
         var me = this,
             data = this.getViewModel().data;
 
-        this.deleteGeometry(data.theGeometry.id, function (error, response) {
+        Ext.Msg.wait('Wait...', 'Deleting dummy...');
+
+        Admin.common.Api.deleteDummy(data.theDummy.id, function (error, response) {
+            Ext.Msg.hide();
             if (error) {
-                console.log('error:', error);
-            } else {
-//                console.log('response:', response);
-                Admin.app.getGeometryStore().reload();
+                Admin.common.Utils.error(error, response);
+            }else {
+                Admin.app.getDummiesStore().load();
                 me.closeView();
             }
-        });
+        })
     }
 
 });
