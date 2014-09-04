@@ -28,6 +28,7 @@ Ext.define('Admin.view.geometry.Search', {
         {
             xtype: 'pagingtoolbar',
             dock: 'bottom',
+            displayInfo: true,
             store: 'Geometry'
         }
     ],

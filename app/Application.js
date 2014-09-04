@@ -23,5 +23,6 @@ Ext.define('Admin.Application', {
             'Accept' : 'application/json',
             'Content-Type' : 'application/json'
         });
+        Ext.Ajax.cors = true;
     }
 });

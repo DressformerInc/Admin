@@ -95,7 +95,7 @@ Ext.define('Admin.view.geometry.EditController', {
 
         geometryParams.name = fieldName && fieldName.getValue() || 'unnamed';
 
-        Admin.common.Api.createGeometry(geometryParams, function (error, id) {
+        Admin.common.Api.createGeometry(geometryParams, function (error, data) {
             Ext.Msg.hide();
             if (error) {
                 Admin.common.Utils.error('Failed to create the geometry!', error);

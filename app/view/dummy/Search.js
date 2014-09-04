@@ -27,6 +27,7 @@ Ext.define('Admin.view.dummy.Search', {
         {
             xtype: 'pagingtoolbar',
             dock: 'bottom',
+            displayInfo: true,
             store: 'Dummies'
         }
     ],

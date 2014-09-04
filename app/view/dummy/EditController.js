@@ -53,7 +53,6 @@ Ext.define('Admin.view.dummy.EditController', {
     createGeometryAndDummy: function (cb) {
         var me = this,
             uploadTree = this.lookupReference('uploadtree'),
-            vmData = uploadTree.getViewModel().data,
             geometryParams = uploadTree.getData(),
             fieldName = this.lookupReference('fieldName'),
             fieldChest = this.lookupReference('fieldChest'),
@@ -81,11 +80,11 @@ Ext.define('Admin.view.dummy.EditController', {
 
         Ext.Msg.wait('Wait...', 'Creating dummy...');
 
-        Admin.common.Api.createGeometry(geometryParams, function (error, id) {
+        Admin.common.Api.createGeometry(geometryParams, function (error, data) {
             if (error) {
                 Admin.common.Utils.error('Failed to create the geometry!', error);
             } else {
-                dummyParams.assets.geometry.id = id;
+                dummyParams.assets.geometry.id = data.id;
                 Admin.common.Api.createDummy(dummyParams, me.onCreatedComplete.bind(me));
             }
         });
@@ -142,7 +141,7 @@ Ext.define('Admin.view.dummy.EditController', {
                 Admin.app.getDummiesStore().load();
                 me.closeView();
             }
-        })
+        });
     }
 
 });

@@ -15,7 +15,7 @@ Ext.define('Admin.view.garment.SearchController', {
             viewModel: {
                 data: {
                     title: 'Add garment',
-                    theGarment: {}
+                    theGarment: null
                 }
             }
         });
@@ -50,7 +50,8 @@ Ext.define('Admin.view.garment.SearchController', {
                 viewModel: {
                     data: {
                         title: 'Add size: '+group,
-                        gid: group
+                        gid: group,
+                        theGarment: null
                     }
                 }
             });

@@ -11,6 +11,41 @@ Ext.define('Admin.common.Api', {
         this.urls = Admin.common.Config.api;
     },
 
+    //********* Garment CRUD **************
+
+    createGarment: function (params, cb) {
+        Ext.Ajax.request({
+            url: Admin.common.Config.api.garments,
+            method: 'POST',
+            jsonData: params,
+            success: function (response) {
+                var json;
+                try {
+                    json = Ext.JSON.decode(response.responseText);
+                } catch (e) {
+                    return cb(e);
+                }
+                cb(null, json);
+            },
+            failure: function (response) {
+                cb(response);
+            }
+        });
+    },
+
+    deleteGarment: function (id, cb) {
+        Ext.Ajax.request({
+            url: Admin.common.Config.api.garments+id,
+            method: 'DELETE',
+            success: function (response) {
+                cb(null, response);
+            },
+            failure: function (response) {
+                cb(response);
+            }
+        });
+    },
+
     //********* Geometry CRUD **************
 
     createGeometry: function (params, cb) {
@@ -19,12 +54,13 @@ Ext.define('Admin.common.Api', {
             method: 'POST',
             jsonData: params,
             success: function (response) {
+                var json;
                 try {
-                    var json = Ext.JSON.decode(response.responseText);
-                    cb(null, json.id);
+                    json = Ext.decode(response.responseText);
                 } catch (e) {
-                    cb(e);
+                    return cb(e);
                 }
+                cb(null, json);
             },
             failure: function (response) {
                 cb(response);
@@ -38,12 +74,13 @@ Ext.define('Admin.common.Api', {
             method: 'PUT',
             jsonData: params,
             success: function (response) {
+                var json;
                 try {
-                    var json = Ext.JSON.decode(response.responseText);
-                    cb(null, json.id);
+                    json = Ext.JSON.decode(response.responseText);
                 } catch (e) {
                     cb(e);
                 }
+                cb(null, json.id);
             },
             failure: function (response) {
                 cb(response);

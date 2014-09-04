@@ -43,6 +43,7 @@ Ext.define('Admin.view.garment.Search', {
         {
             xtype: 'pagingtoolbar',
             dock: 'bottom',
+            displayInfo: true,
             store: 'Garments'
         }
     ],
