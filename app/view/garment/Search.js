@@ -84,7 +84,7 @@ Ext.define('Admin.view.garment.Search', {
             xtype:'actioncolumn',
             width:50,
             items: [{
-                icon: '/resources/images/preview.png',  // Use a URL in the icon config
+                icon: 'resources/images/preview.png',  // Use a URL in the icon config
                 tooltip: 'Preview',
                 handler: 'onPreview'
             }]
