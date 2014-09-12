@@ -63,11 +63,6 @@ Ext.define('Admin.view.garment.Search', {
 
     columns: [
         {
-            text: 'ID',
-            hidden: true,
-            dataIndex: 'id'
-        },
-        {
             text: 'Gid',
             hidden: true,
             dataIndex: 'gid'
@@ -80,6 +75,19 @@ Ext.define('Admin.view.garment.Search', {
             text: 'Title',
             dataIndex: 'name',
             flex: 1
+        }, {
+            text: 'ID',
+            dataIndex: 'id',
+            flex: 2
+        },
+        {
+            xtype:'actioncolumn',
+            width:50,
+            items: [{
+                icon: '/resources/images/preview.png',  // Use a URL in the icon config
+                tooltip: 'Preview',
+                handler: 'onPreview'
+            }]
         }
     ],
     listeners: {

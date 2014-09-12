@@ -63,5 +63,25 @@ Ext.define('Admin.view.garment.SearchController', {
     onReload: function () {
         var store = Ext.getStore('Garments');
         store.reload();
+    },
+
+    onPreview: function(grid, rowIndex, colIndex) {
+        var rec = grid.getStore().getAt(rowIndex);
+
+        Ext.create('Ext.window.Window', {
+            title: 'Preview: '+rec.get('name'),
+            width: 450,
+            height: 600,
+            layout: 'fit',
+            items : [{
+                xtype : "component",
+                autoEl : {
+                    tag : "iframe",
+                    src : "http://v2.dressformer.com/"+rec.get('id'),
+                    //src : "http://localhost:3000/"+rec.get('id'),
+                    frameborder: 0
+                }
+            }]
+        }).show();
     }
 });
