@@ -58,6 +58,18 @@ Ext.define('Admin.view.garment.Search', {
 //            hideGroupedHeader: true,
 //            enableGroupingMenu: true,
             groupHeaderTpl: new Ext.XTemplate('<tpl for=".">', '<div>Garment: {name} <input type="button" value="Add size"></div>', '</tpl>')
+        },
+        {
+            ftype: 'rowbody',
+            setupRowData: function(record, rowIndex, rowValues) {
+                var headerCt = this.view.headerCt,
+                    colspan = headerCt.getColumnCount();
+
+                // Usually you would style the my-body-class in CSS file
+                Ext.apply(rowValues, {
+                    rowBody: '<div style="padding: 5px; border-top: 1px solid #d3d3d3;"></div>',
+                });
+            }
         }
     ],
 
@@ -73,7 +85,7 @@ Ext.define('Admin.view.garment.Search', {
                 //console.log('renderer value:', r.data.assets.placeholder.url);
                 var url = r.data.assets.placeholder.url;
                 if (url){
-                    return '<img src="'+url+'?scale=x128" alt="placeholder"/>'
+                    return '<img src="'+url+'?scale=x128&q=100" alt="placeholder"/>'
                 }
 
                 return '';
