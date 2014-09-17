@@ -68,6 +68,18 @@ Ext.define('Admin.view.garment.Search', {
             dataIndex: 'gid'
         },
         {
+            text: '',
+            renderer: function (v, m, r) {
+                //console.log('renderer value:', r.data.assets.placeholder.url);
+                var url = r.data.assets.placeholder.url;
+                if (url){
+                    return '<img src="'+url+'?scale=x128" alt="placeholder"/>'
+                }
+
+                return '';
+            }
+        },
+        {
             text: 'Size',
             dataIndex: 'size_name'
         },
