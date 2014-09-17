@@ -73,11 +73,24 @@ Ext.define('Admin.view.garment.SearchController', {
             width: 450,
             height: 600,
             layout: 'fit',
+            tbar: [{
+                xtype: 'button',
+                text: 'Make placeholder',
+                style: {borderBottom: '1px solid lightgray'},
+                handler: function () {
+                    var preview = Ext.ComponentQuery.query('#previewFrame')[0].el.dom.contentWindow;
+
+                    preview.postMessage({method: 'saveGarmentPlaceholder', params: [rec.get('id')]}, '*');
+                }
+            }],
             items : [{
                 xtype : "component",
+                reference: 'cmpIframe',
+                id: 'previewFrame',
                 autoEl : {
                     tag : "iframe",
-                    src : "http://v2.dressformer.com/"+rec.get('id'),
+
+                    src : "http://v2.dressformer.com/widget/"+rec.get('id'),
                     //src : "http://localhost:3000/"+rec.get('id'),
                     frameborder: 0
                 }
