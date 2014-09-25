@@ -66,6 +66,7 @@ Ext.define('Admin.view.upload.Upload', {
                     fields: ['name'],
                     data: [
                         {"name": "base"},
+                        {"name": "mtl"},
                         {"name": "normal"},
                         {"name": "diffuse"},
                         {"name": "specular"},
@@ -134,6 +135,7 @@ Ext.define('Admin.view.upload.Upload', {
     getTexturesData: function () {
         var root = this.getRootNode(),
             textures = root.findChild('name', 'textures'),
+            base = root.findChild('name', 'base'),
             params = {};
 
         /*
@@ -156,6 +158,15 @@ Ext.define('Admin.view.upload.Upload', {
          },
          */
 
+        base.eachChild(function (node) {
+            if (node.get('type') === 'mtl') {
+                params['mtl'] = {
+                    id: node.get('assetId'),
+                    orig_name: node.get('name')
+                }
+            }
+        });
+
         textures.eachChild(function (node) {
             params[node.get('type')] = {
                 id: node.get('assetId'),
@@ -177,7 +188,8 @@ Ext.define('Admin.view.upload.Upload', {
             },
             ok = true;
 
-        if (base && base.firstChild && base.firstChild.get('assetId')) {
+        if (base ) {
+            var obj = base.findChild('type', 'base');
             params.base.id = base.firstChild.get('assetId');
             params.base.origin_name = base.firstChild.get('name');
         } else {

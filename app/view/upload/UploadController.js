@@ -51,7 +51,7 @@ Ext.define('Admin.view.upload.UploadController', {
         }
 
         function isMtl(file) {
-            return /\.mtl&/.test(file.name);
+            return /\.mtl$/.test(file.name);
         }
 
         function isSection(name, file) {
@@ -105,6 +105,9 @@ Ext.define('Admin.view.upload.UploadController', {
                     base.appendChild(node);
 //                    fieldName.setValue(getGarmentName(file.name));
                 }
+            } else if (isMtl(file)){
+                node.type = 'mtl';
+                base.appendChild(node);
             } else {
                 unknown.appendChild(node);
             }

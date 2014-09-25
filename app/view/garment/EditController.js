@@ -92,6 +92,7 @@ Ext.define('Admin.view.garment.EditController', {
                 size_name: fieldSize && fieldSize.getValue(),
                 gid: vmData && vmData.gid,
                 assets: {
+                    mtl: {},
                     geometry: {},
                     diffuse: {},
                     normal: {},

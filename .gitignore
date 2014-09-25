@@ -7,3 +7,5 @@ build/
 bootstrap.js
 bootstrap.json
 bootstrap.css
+
+node_modules
