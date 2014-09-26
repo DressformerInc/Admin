@@ -87,10 +87,14 @@ Ext.define('Admin.view.garment.EditController', {
             texturesParams = uploadTree.getTexturesData(),
             fieldName = this.lookupReference('fieldName'),
             fieldSize = this.lookupReference('fieldSize'),
+            fieldSlot = this.lookupReference('fieldSlot'),
+            fieldLayer = this.lookupReference('fieldLayer'),
             garmentParams = {
                 name: fieldName && fieldName.getValue() || 'unnamed',
                 size_name: fieldSize && fieldSize.getValue(),
                 gid: vmData && vmData.gid,
+                slot: fieldSlot && fieldSlot.getValue(),
+                layer: fieldLayer && +fieldLayer.getValue(),
                 assets: {
                     mtl: {},
                     geometry: {},

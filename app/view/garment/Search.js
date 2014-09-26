@@ -67,7 +67,7 @@ Ext.define('Admin.view.garment.Search', {
 
                 // Usually you would style the my-body-class in CSS file
                 Ext.apply(rowValues, {
-                    rowBody: '<div style="padding: 5px; border-top: 1px solid #d3d3d3;"></div>',
+                    rowBody: '<div style="padding: 5px; border-top: 1px solid #d3d3d3;"></div>'
                 });
             }
         }
@@ -93,12 +93,21 @@ Ext.define('Admin.view.garment.Search', {
         },
         {
             text: 'Size',
-            dataIndex: 'size_name'
+            dataIndex: 'size_name',
+            width: 50
         },
         {
             text: 'Title',
             dataIndex: 'name',
             flex: 1
+        }, {
+            text: 'Slot',
+            dataIndex: 'slot',
+            width: 50
+        }, {
+            text: 'Layer',
+            dataIndex: 'Layer',
+            width: 60
         }, {
             text: 'ID',
             dataIndex: 'id',

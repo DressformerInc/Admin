@@ -190,8 +190,8 @@ Ext.define('Admin.view.upload.Upload', {
 
         if (base ) {
             var obj = base.findChild('type', 'base');
-            params.base.id = base.firstChild.get('assetId');
-            params.base.origin_name = base.firstChild.get('name');
+            params.base.id = obj.get('assetId');
+            params.base.origin_name = obj.get('name');
         } else {
             console.log('Error: base is empty');
             return;

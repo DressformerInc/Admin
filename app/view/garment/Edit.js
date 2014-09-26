@@ -41,10 +41,38 @@ Ext.define('Admin.view.garment.Edit', {
                     bind: '{theGarment.name}'
                 },
                 {
-                    xtype: 'textfield',
+                    xtype: 'combo',
                     fieldLabel: 'Size',
                     reference: 'fieldSize',
+                    editable: false,
+                    queryMode: 'local',
+                    displayField: 'name',
+                    valueField: 'name',
+                    store: {
+                        fields: ['name'],
+                        data : [
+                            {"name":"XXS"},
+                            {"name":"XS"},
+                            {"name":"S"},
+                            {"name":"M"},
+                            {"name":"L"},
+                            {"name":"XL"},
+                            {"name":"XXL"}
+                        ]
+                    },
                     bind: '{theGarment.size_name}'
+                },
+                {
+                    xtype: 'textfield',
+                    fieldLabel: 'Slot',
+                    reference: 'fieldSlot',
+                    bind: '{theGarment.slot}'
+                },
+                {
+                    xtype: 'textfield',
+                    fieldLabel: 'Layer',
+                    reference: 'fieldLayer',
+                    bind: '{theGarment.layer}'
                 }
             ]
         }
