@@ -28,7 +28,41 @@ Ext.define('Admin.view.upload.UploadController', {
                 chest: targets.findChild('name', 'chest'),
                 hips: targets.findChild('name', 'hips')
             },
-            unknown = root.findChild('name', 'unknown');
+            unknown = root.findChild('name', 'unknown'),
+            params = {
+                height: {
+                    min: 145,
+                    max: 180
+                },
+                chest: {
+                    min: 78.68,
+                    max: 105.037
+                },
+                underbust: {
+                    min: 64.598,
+                    max: 86.109
+                },
+                underchest: {
+                    min: 64.598,
+                    max: 86.109
+                },
+                waist: {
+                    min: 57.462,
+                    max: 96.18
+                },
+                hips: {
+                    min: 83.394,
+                    max: 124.027
+                }
+            };
+
+        function isMin(file) {
+            return /min/i.test(file.name);
+        }
+
+        function isMax(file) {
+            return /max/i.test(file.name);
+        }
 
         function isTexture(file) {
             return /image/i.test(file.type);
@@ -88,9 +122,12 @@ Ext.define('Admin.view.upload.UploadController', {
                         if (isSection(section, file)) {
                             sectionFind = true;
 
+                            var weight = params[section];
+
                             sectionNode.appendChild({
                                 name: node.name,
                                 size: node.size,
+                                weight: isMin(file) ? weight.min : weight.max,
                                 type: section,
                                 leaf: true
                             });
@@ -105,7 +142,7 @@ Ext.define('Admin.view.upload.UploadController', {
                     base.appendChild(node);
 //                    fieldName.setValue(getGarmentName(file.name));
                 }
-            } else if (isMtl(file)){
+            } else if (isMtl(file)) {
                 node.type = 'mtl';
                 base.appendChild(node);
             } else {
