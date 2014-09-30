@@ -68,6 +68,7 @@ Ext.define('Admin.view.garment.SearchController', {
     onPreview: function(grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
 
+
         Ext.create('Ext.window.Window', {
             title: 'Preview: '+rec.get('name'),
             width: 450,
@@ -79,8 +80,20 @@ Ext.define('Admin.view.garment.SearchController', {
                 style: {borderBottom: '1px solid lightgray'},
                 handler: function () {
                     var preview = Ext.ComponentQuery.query('#previewFrame')[0].el.dom.contentWindow;
-
                     preview.postMessage({method: 'saveGarmentPlaceholder', params: [rec.get('id')]}, '*');
+                }
+            },{
+                xtype: 'button',
+                text: 'Show dummy',
+                enableToggle: true,
+                pressed: true,
+                handler: function (self) {
+                    var preview = Ext.ComponentQuery.query('#previewFrame')[0].el.dom.contentWindow;
+                    if (self.pressed){
+                        preview.postMessage({method: 'showDummy', params: []}, '*');
+                    }else {
+                        preview.postMessage({method: 'hideDummy', params: []}, '*');
+                    }
                 }
             }],
             items : [{
