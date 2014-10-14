@@ -144,7 +144,13 @@ Ext.define('Admin.view.upload.UploadController', {
                 }
             } else if (isMtl(file)) {
                 node.type = 'mtl';
-                base.appendChild(node);
+                var reader = new moxie.file.FileReader();
+                reader.readAsText(file.getSource());
+                reader.addEventListener('loadend', function () {
+                    node.parsed = Admin.common.Utils.parseMtl(reader.result);
+                    console.log('parsed mtl:', node.parsed);
+                    base.appendChild(node);
+                });
             } else {
                 unknown.appendChild(node);
             }
