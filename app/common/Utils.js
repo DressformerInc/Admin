@@ -21,29 +21,22 @@ Ext.define('Admin.common.Utils', {
             materialsInfo = {};
 
         function parseTextureParams(str) {
-            var words = str.split(' '),
+            var words = str.split(/\s+/),
                 params = {
-                    orig_name: ''
+                    id: '',
+                    orig_name: '',
+                    options: ''
                 };
 
-            for (var i = 0, l = words.length; i < l; ++i) {
-                var word = words[i];
-                if ('-' === word[0]) {
-                    params[word] = words[i+1];
-                    i++;
-                }else {
-                    if (params.orig_name) params.orig_name += ' ';
-                    params.orig_name += word;
-                }
-            }
+            if (words.length === 0) return params;
 
-//            //find id of file
-//            for (var p in this.options.assets){
-//                if (this.options.assets.hasOwnProperty(p)) {
-//                    var prop = this.options.assets[p];
-//                    if (prop.orig_name === params.file) params.url = prop.url;
-//                }
-//            }
+            //пробелы в имени файла недопустимы
+            var file = words[words.length-1].split('/');
+            params.orig_name = file[file.length-1];
+
+            if (words.length > 1){
+                params.options = words.slice(0, -1).join(' ');
+            }
 
             return params;
         }

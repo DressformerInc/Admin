@@ -147,8 +147,8 @@ Ext.define('Admin.view.upload.UploadController', {
                 var reader = new moxie.file.FileReader();
                 reader.readAsText(file.getSource());
                 reader.addEventListener('loadend', function () {
-                    node.parsed = Admin.common.Utils.parseMtl(reader.result);
-                    console.log('parsed mtl:', node.parsed);
+                    node.mtl = Admin.common.Utils.parseMtl(reader.result);
+                    console.log('parsed mtl:', node.mtl);
                     base.appendChild(node);
                 });
             } else {
