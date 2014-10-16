@@ -101,6 +101,27 @@ Ext.define('Admin.common.Api', {
         });
     },
 
+    //********* Material CRUD **************
+    createMaterials: function (materials, cb) {
+        Ext.Ajax.request({
+            url: this.urls.materials,
+            method: 'POST',
+            jsonData: materials,
+            success: function (response) {
+                var json;
+                try {
+                    json = Ext.JSON.decode(response.responseText);
+                } catch (e) {
+                    return cb(e);
+                }
+
+                cb(null, json);
+            },
+            failure: function (response) {
+                cb(response);
+            }
+        });
+    },
     //********* Dummy CRUD **************
 
     /**

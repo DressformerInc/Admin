@@ -162,16 +162,20 @@ Ext.define('Admin.view.upload.Upload', {
             if (node.get('type') === 'mtl') {
                 params['mtl'] = {
                     id: node.get('assetId'),
-                    orig_name: node.get('name')
+                    orig_name: node.get('name'),
+                    sourceMtl: node.get('sourceMtl'),
+                    parsedMtl: node.get('parsedMtl')
                 }
             }
         });
 
         textures.eachChild(function (node) {
-            params[node.get('type')] = {
-                id: node.get('assetId'),
-                orig_name: node.get('name')
-            }
+//            params[node.get('type')] = {
+//                id: node.get('assetId'),
+//                orig_name: node.get('name')
+//            }
+
+            params[node.get('name')] = node.get('assetId');
         });
 
         return params;

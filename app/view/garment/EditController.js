@@ -96,36 +96,61 @@ Ext.define('Admin.view.garment.EditController', {
                 slot: fieldSlot && fieldSlot.getValue(),
                 layer: fieldLayer && +fieldLayer.getValue(),
                 assets: {
-                    mtl: {},
                     geometry: {},
-                    diffuse: {},
-                    normal: {},
-                    specular: {}
+                    mtl_src: {}
                 }
             };
 
         geometryParams.name = (garmentParams.name || 'unnamed') + ' garment geometry';
 
-        Ext.apply(garmentParams.assets, texturesParams);
+//        Ext.apply(garmentParams.assets, texturesParams);
+        garmentParams.assets.mtl_src = {
+            id: texturesParams.mtl.id,
+            origin_name: texturesParams.mtl.orig_name
+        };
+
+        //find textures id
+        var materials = texturesParams.mtl.parsedMtl;
+        for (var i = 0, l = materials.length; i < l; ++i) {
+            var material = materials[i];
+            for (var prop in material) {
+                if (material.hasOwnProperty(prop)
+                    && /(map_|bumb)/.test(prop)
+                    ) {
+                    var map = material[prop];
+                    map.id = texturesParams[map.orig_name];
+                }
+            }
+        }
 
         Ext.Msg.wait('Wait...', 'Creating garment...');
 
-        Admin.common.Api.createGeometry(geometryParams, function (error, data) {
-            if (error) {
-                Admin.common.Utils.error('Failed to create the geometry!', error);
-            } else {
-                garmentParams.assets.geometry.id = data.id;
-                Admin.common.Api.createGarment(garmentParams, function (error, garmentData) {
-                    Ext.Msg.hide();
-                    if (error) {
-                        Admin.common.Utils.error('Filed to create the garment!', error);
-                    } else {
-                        Admin.app.getGarmentsStore().reload();
-                        me.closeView();
-                    }
-                });
-            }
+        Admin.common.Api.createMaterials(materials, function (error, materialsData) {
+           if (error){
+               Admin.common.Utils.error('Failed to create the materials!', error);
+           } else{
+               console.log('response materilas:', materialsData);
+               garmentParams.materials = materialsData;
+               Admin.common.Api.createGeometry(geometryParams, function (error, data) {
+                   if (error) {
+                       Admin.common.Utils.error('Failed to create the geometry!', error);
+                   } else {
+                       garmentParams.assets.geometry.id = data.id;
+                       Admin.common.Api.createGarment(garmentParams, function (error, garmentData) {
+                           Ext.Msg.hide();
+                           if (error) {
+                               Admin.common.Utils.error('Filed to create the garment!', error);
+                           } else {
+                               Admin.app.getGarmentsStore().reload();
+                               me.closeView();
+                           }
+                       });
+                   }
+               });
+           }
         });
+
+
     },
 
     onUploadedComplete: function (tree, files) {

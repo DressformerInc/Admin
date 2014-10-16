@@ -9,11 +9,12 @@ Ext.define('Admin.common.Config', {
         var url = 'http://v2.dressformer.com/';
         this.api = {
             base: url,
-            garments: url+'api/garments/',
-            dummies: url+'api/dummies/',
-            geometry: url+'assets/geometry/',
-            user: url+'api/user/',
-            assets: url+'assets/'
+            garments: url+'api/v2/garments/',
+            dummies: url+'api/v2/dummies/',
+            geometry: url+'assets/v2/geometry/',
+            user: url+'api/v2/user/',
+            assets: url+'assets/v2/',
+            materials: url+'api/v2/materials/'
         };
     }
 });

@@ -18,9 +18,15 @@ Ext.define('Admin.common.Utils', {
             info = {},
             delimiter_pattern = /\s+/,
             mapPattern = /(map_|bump)/,
-            materialsInfo = {};
+            materials = [];
 
         function parseTextureParams(str) {
+            //test full path
+            var start = str.search(/\w\:/);
+            if(start != -1){
+                str = str.replace(str.substring(start, str.lastIndexOf('\\')+1), '');
+            }
+
             var words = str.split(/\s+/),
                 params = {
                     id: '',
@@ -28,10 +34,8 @@ Ext.define('Admin.common.Utils', {
                     options: ''
                 };
 
-            if (words.length === 0) return params;
-
             //пробелы в имени файла недопустимы
-            var file = words[words.length-1].split('/');
+            var file = words[words.length-1].split('\\');
             params.orig_name = file[file.length-1];
 
             if (words.length > 1){
@@ -59,7 +63,7 @@ Ext.define('Admin.common.Utils', {
             if (key === "newmtl") {
                 // New material
                 info = {name: value};
-                materialsInfo[value] = info;
+                materials.push(info);
             } else if (info) {
 //                if (key === "ka" || key === "kd" || key === "ks") {
 //                    var ss = value.split(delimiter_pattern, 3);
@@ -69,6 +73,8 @@ Ext.define('Admin.common.Utils', {
 //                }
                 if (mapPattern.test(key)){
                     info[key] = parseTextureParams(value);
+                }else if('illum' === key || 'sharpness' === key){
+                    info[key] = +value;
                 }else {
                     info[key] = value;
                 }
@@ -77,6 +83,6 @@ Ext.define('Admin.common.Utils', {
 
         }
 
-        return materialsInfo;
+        return materials;
     }
 });
