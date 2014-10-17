@@ -35,6 +35,12 @@ Ext.define('Admin.view.geometry.Edit', {
             items: [
                 {
                     xtype: 'textfield',
+                    fieldLabel: 'Id',
+                    reference: 'fieldId',
+                    bind: '{theGeometry.id}'
+                },
+                {
+                    xtype: 'textfield',
                     fieldLabel: 'Name',
                     reference: 'fieldName',
                     bind: '{theGeometry.name}'

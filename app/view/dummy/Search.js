@@ -37,7 +37,7 @@ Ext.define('Admin.view.dummy.Search', {
     columns: [
         {
             text: 'ID',
-            hidden: true,
+            hidden: false,
             dataIndex: 'id'
         },
         {

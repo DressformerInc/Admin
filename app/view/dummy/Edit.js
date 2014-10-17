@@ -35,6 +35,11 @@ Ext.define('Admin.view.dummy.Edit', {
             items: [
                 {
                     xtype: 'textfield',
+                    fieldLabel: 'Id',
+                    reference: 'fieldId',
+                    bind: '{theDummy.id}'
+                },                {
+                    xtype: 'textfield',
                     fieldLabel: 'Name',
                     reference: 'fieldName',
                     bind: '{theDummy.name}'

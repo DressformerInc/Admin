@@ -38,7 +38,7 @@ Ext.define('Admin.view.geometry.Search', {
     columns: [
         {
             text: 'ID',
-            hidden: true,
+            hidden: false,
             dataIndex: 'id'
         },
         {

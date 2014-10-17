@@ -36,6 +36,11 @@ Ext.define('Admin.view.garment.Edit', {
             items: [
                 {
                     xtype: 'textfield',
+                    fieldLabel: 'Id',
+                    reference: 'fieldId',
+                    bind: '{theGarment.id}'
+                },                {
+                    xtype: 'textfield',
                     fieldLabel: 'Name',
                     reference: 'fieldName',
                     bind: '{theGarment.name}'
