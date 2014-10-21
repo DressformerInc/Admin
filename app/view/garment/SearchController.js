@@ -80,7 +80,7 @@ Ext.define('Admin.view.garment.SearchController', {
                 style: {borderBottom: '1px solid lightgray'},
                 handler: function () {
                     var preview = Ext.ComponentQuery.query('#previewFrame')[0].el.dom.contentWindow;
-                    preview.postMessage({method: 'saveGarmentPlaceholder', params: [rec.get('id')]}, '*');
+                    preview.postMessage({method: 'MakeScreenshot', params: [{garmentId:rec.get('id')}]}, '*');
                 }
             },{
                 xtype: 'button',
@@ -90,9 +90,9 @@ Ext.define('Admin.view.garment.SearchController', {
                 handler: function (self) {
                     var preview = Ext.ComponentQuery.query('#previewFrame')[0].el.dom.contentWindow;
                     if (self.pressed){
-                        preview.postMessage({method: 'showDummy', params: []}, '*');
+                        preview.postMessage({method: 'ShowDummy', params: []}, '*');
                     }else {
-                        preview.postMessage({method: 'hideDummy', params: []}, '*');
+                        preview.postMessage({method: 'HideDummy', params: []}, '*');
                     }
                 }
             }],
