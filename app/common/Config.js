@@ -5,8 +5,8 @@
 Ext.define('Admin.common.Config', {
     singleton: true,
     constructor: function () {
-//        var url = 'http://webgl.dressformer.com/';
         var url = 'http://v2.dressformer.com/';
+//        var url = 'http://localhost:5000/';
         this.api = {
             base: url,
             garments: url+'api/v2/garments/',

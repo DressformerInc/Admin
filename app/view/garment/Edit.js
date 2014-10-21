@@ -36,6 +36,7 @@ Ext.define('Admin.view.garment.Edit', {
             items: [
                 {
                     xtype: 'textfield',
+                    readOnly: true,
                     fieldLabel: 'Id',
                     reference: 'fieldId',
                     bind: '{theGarment.id}'
