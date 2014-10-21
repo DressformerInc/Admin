@@ -83,7 +83,7 @@ Ext.define('Admin.view.garment.Search', {
             text: '',
             renderer: function (v, m, r) {
                 //console.log('renderer value:', r.data.assets.placeholder.url);
-                var url = r.data.assets.placeholder.url;
+                var url = r.data.url_prefix + r.data.assets.placeholder.id;
                 if (url){
                     return '<img src="'+url+'?scale=x128&q=100" alt="placeholder"/>'
                 }
