@@ -15,7 +15,8 @@ Ext.define('Admin.Application', {
     stores: [
         'Garments',
         'Geometry',
-        'Dummies'
+        'Dummies',
+        'Materials'
     ],
     
     launch: function () {
