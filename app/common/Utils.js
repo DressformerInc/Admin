@@ -17,7 +17,7 @@ Ext.define('Admin.common.Utils', {
         var lines = mtl.split("\n"),
             info = {},
             delimiter_pattern = /\s+/,
-            mapPattern = /(map_|bump)/,
+            mapPattern = /(map_|bump)/i,
             materials = [];
 
         function parseTextureParams(str) {

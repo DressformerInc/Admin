@@ -115,7 +115,7 @@ Ext.define('Admin.view.garment.EditController', {
             var material = materials[i];
             for (var prop in material) {
                 if (material.hasOwnProperty(prop)
-                    && /(map_|bumb)/.test(prop)
+                    && /(map_|bump)/i.test(prop)
                     ) {
                     var map = material[prop];
                     map.id = texturesParams[map.orig_name];
